@@ -1,0 +1,30 @@
+.home {
+	max-width: 1200px;
+	margin: 0 auto;
+    text-align: left;
+    overflow: hidden;
+
+	.wrap {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.wrap img {
+		margin: 3px;
+		padding: 5px;
+		height: 200px;
+		background: #ccc;
+		flex-grow: 1;
+		object-fit: cover;
+		transition: 0.3s;
+	}
+	.wrap:after {
+		display: block;
+		content: '';
+		flex-grow: 9999;
+	}
+	.wrap img:hover {
+		transform: scale(1.2);
+		box-shadow: 0 0 20px #fff;
+		z-index: 9999;
+	}
+}
