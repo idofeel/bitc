@@ -1,30 +1,98 @@
-.home {
-	max-width: 1200px;
-	margin: 0 auto;
-    text-align: left;
-    overflow: hidden;
+@media screen and( min-width:768px) {
+	.home {
+		max-width: 1200px;
+		margin: 0 auto;
+		text-align: left;
+		overflow: hidden;
+		padding: 20px;
+		box-sizing: border-box;
 
-	.wrap {
-		display: flex;
-		flex-wrap: wrap;
+		.wrap {
+			display: flex;
+			flex-wrap: wrap;
+			overflow: hidden;
+			& > div {
+				position: relative;
+				&:hover {
+					box-shadow: 0 0 20px #fff;
+					z-index: 9999;
+				}
+			}
+			& img {
+				margin: 3px;
+				padding: 5px;
+				height: 280px;
+				background: rgb(243, 243, 243);
+				flex-grow: 1;
+				object-fit: cover;
+				transition: 0.3s;
+				cursor: pointer;
+			}
+			&:after {
+				display: block;
+				content: '';
+				flex-grow: 9999;
+			}
+		}
 	}
-	.wrap img {
-		margin: 3px;
-		padding: 5px;
-		height: 200px;
-		background: #ccc;
-		flex-grow: 1;
-		object-fit: cover;
-		transition: 0.3s;
-	}
-	.wrap:after {
-		display: block;
-		content: '';
-		flex-grow: 9999;
-	}
-	.wrap img:hover {
-		transform: scale(1.2);
-		box-shadow: 0 0 20px #fff;
-		z-index: 9999;
-	}
+}
+
+@media screen and( max-width:414px) {
+   
+	// .item {
+	// 	width: 172.5px;
+    //     margin-bottom: 10px;
+    //     margin-left: auto;
+	// 	-moz-page-break-inside: avoid;
+	// 	-webkit-column-break-inside: avoid;
+	// 	break-inside: avoid;
+	// 	background: #909090;
+	// 	& > img {
+	// 		width: 100%;
+	// 	}
+	// }   
+
+	// .wrap {
+	// 	-moz-column-count: 2;
+	// 	/* Firefox */
+	// 	-webkit-column-count: 2;
+	// 	/* Safari 和 Chrome */
+	// 	column-count: 2;
+	// 	-moz-column-gap: 1em;
+	// 	-webkit-column-gap: 1em;
+	// 	column-gap: 1em;
+    // }
+    
+
+    .wrap {
+        display: flex;  
+        flex-flow:column wrap;
+        height: 100vh;
+      }
+      .item {
+          margin: 10px;
+          width: calc(100%/2 - 20px);
+      }
+      .item img{
+          width: 100%;
+        }
+      
+}
+
+.height-100 {
+	height: 100px;
+	background: rgb(71, 169, 248);
+}
+
+.height-50 {
+	height: 50px;
+	background: rgb(71, 169, 248);
+}
+.height-120 {
+	height: 120px;
+	background: rgb(71, 169, 248);
+}
+.height-80 {
+	background: rgb(71, 169, 248);
+	height: 80px;
 }
