@@ -21,7 +21,7 @@ export function autoUnit(unit) {
 export function mergeData(newData = [], oldData = []) {
   newData.forEach((item, i) => {
     const oldItem = oldData[i] || {}
-    oldItem.key === item.key && (newData[i] = oldItem)
+    oldItem.id === item.id && (newData[i] = oldItem)
   })
   return newData
 }

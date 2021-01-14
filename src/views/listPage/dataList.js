@@ -1,6 +1,6 @@
 // 这个文件负责管理数据和逻辑处理
 
-import { onBeforeMount, reactive } from 'vue'
+import { onBeforeMount,  reactive } from 'vue'
 import request from '@/api'
 
 const { post } = request
@@ -23,12 +23,10 @@ export default function() {
 	const getData = async () => {
 		const res = await post('/list', requestParams)
 		if (res.success) {
-			dataList.push(...res.data)
+            dataList.push(...res.data)
 			requestParams.currentPage++
 		}
-        
-    return dataList
-    
+		return dataList
 	}
 
 	onBeforeMount(getData)

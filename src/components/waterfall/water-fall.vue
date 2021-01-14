@@ -4,8 +4,6 @@
 			class="vue-waterfall"
 			:style="{ width: containerWidth, height: `${containerHeight}px` }"
 		>
-
-        {{list}}
 			<water-fall-item
 				v-for="(item, i) in list"
 				:key="item.key || item.id"
@@ -108,7 +106,6 @@ export default {
 		watch( 
 			props.data,
 			(data) => {
-                console.log(mergeData(data, list.value));
 				setState(mergeData(data, list.value))
 			}
 		)
