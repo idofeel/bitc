@@ -1,8 +1,5 @@
 <template>
-	<div id="nav">
-		<router-link to="/">Home</router-link> |
-		<router-link to="/list">list</router-link>
-	</div>
+
 	<router-view />
 </template>
 
@@ -16,8 +13,7 @@
 }
 
 #nav {
-	padding: 30px;
-
+    margin-bottom: 10px;
 	a {
 		font-weight: bold;
 		color: #2c3e50;
@@ -25,6 +21,34 @@
 		&.router-link-exact-active {
 			color: #42b983;
 		}
+    }
+    .logo{
+        width: 1200px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+}
+
+
+
+
+@media screen and (max-width: 568px) {
+	.xs-hide {
+		display: none;
+	}
+
+	.xs-show {
+		display: block;
+	}
+}
+
+@media screen and (min-width: 568px) {
+	.xs-hide {
+		display: block;
+	}
+
+	.xs-show {
+		display: none;
 	}
 }
 </style>

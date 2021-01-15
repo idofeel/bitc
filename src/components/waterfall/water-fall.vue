@@ -116,7 +116,7 @@ export default {
 			containerWidth,
 			containerHeight,
 			padding: computed(() => autoUnit(parseInt(props.gap) / 2)),
-			itemWidth: computed(() => autoUnit(props.width)),
+			itemWidth: computed(() => autoUnit(fullItemWidth)),
 			load: load,
 			loadedData
 		}
@@ -141,7 +141,8 @@ export default {
 	transition: opacity 0.5s 0.15s, left 0.3s, top 0.3s;
 	&.loaded {
 		opacity: 1;
-		visibility: visible;
+        visibility: visible;
+        box-sizing: border-box;
 	}
 }
 
