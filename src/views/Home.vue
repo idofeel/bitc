@@ -1,25 +1,29 @@
 <template>
 	<div class="home">
-		<div class="wrap" @click="$router.push('/list')">
+        <Vue3Barrel :data="list"/>
+		<!-- <div class="wrap" @click="$router.push('/list')">
 			<div v-for="(item, index) in list" :key="index" class="item">
 				<img :src="require('@/assets/images/' + item.url)" alt="" />
 				<h4>{{ item.url.split('.jpeg')[0] }}</h4>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
 <script>
 import { ref } from 'vue'
-
+import Vue3Barrel from '@/components/vue3-barrel'
 export default {
-	name: 'Home',
+    name: 'Home',
+    components:{
+        Vue3Barrel
+    },
 	setup() {
 		const list = ref([
-			{ url: '有声数据库.jpeg', title: '标题标题' },
 			{ url: '抗疫有我为爱发声.jpeg', title: '三叶巫女' },
-			{ url: '行读.jpeg', title: '标题标题' },
 			{ url: '经典诵读.jpeg', title: '标题标题' },
+			{ url: '行读.jpeg', title: '标题标题' },
+			{ url: '有声数据库.jpeg', title: '标题标题' },
 			{ url: '敬请期待.jpeg', title: '标题标题' }
 		])
 		return {
