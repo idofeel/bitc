@@ -124,38 +124,50 @@ export default function(props) {
 		barrelData.splice(0, barrelData.length)
 		barrelData.push(...newBarrelData)
 		// 可能会出现滚动条
-		nextTick(containerResize)
+		nextTick(initBarrel)
 	}
 
 	const initBarrel = () => {
 		// barrelData.splice(0, barrelData.length)
-
-		totalWidth.value = container.value.clientWidth
-		setBarrelData(totalWidth.value)
-	}
-
-	const containerResize = () => {
 		if (container.value.clientWidth !== totalWidth.value) {
-			// debounce(initBarrel, 200)
-			initBarrel()
+			totalWidth.value = container.value.clientWidth
+			setBarrelData(totalWidth.value)
 		}
 	}
-
-	// const debounce = (fn, delay) => {
-	// 	let timer = null
-	// 	return (...arg) => {
-	// 		clearTimeout(timer)
-	// 		timer = setTimeout(() => fn.apply(arg), delay)
-	// 	}
-	// }
-
 	onMounted(() => {
 		initBarrel()
-		window.addEventListener('resize', containerResize)
+		//
+		window.addEventListener('resize', debounce(initBarrel))
 	})
 
 	return {
 		barrelData,
 		container
 	}
+}
+
+
+function t() {
+	for (var t = 0, r = 0, e = arguments.length; r < e; r++)
+		t += arguments[r].length
+	var n = Array(t),
+		o = 0
+	for (r = 0; r < e; r++)
+		for (var l = arguments[r], u = 0, i = l.length; u < i; u++, o++)
+			n[o] = l[u]
+	return n
+}
+const debounce = function(r, e) {
+    var n
+    return (
+        void 0 === e && (e = 300),
+        function() {
+            for (var o = this, l = [], u = 0; u < arguments.length; u++)
+                l[u] = arguments[u]
+            n && clearTimeout(n),
+                (n = setTimeout(function() {
+                    r.call.apply(r, t([o], l)), (n = null)
+                }, e))
+        }
+    )
 }

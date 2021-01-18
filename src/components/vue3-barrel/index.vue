@@ -1,5 +1,5 @@
 <template>
-	<div ref="container">
+	<div ref="container" class="barrelContainer">
 		<img
 			v-for="(item, index) in barrelData"
 			:src="item.src"
@@ -53,4 +53,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="less" scoped>
+    .barrelContainer{
+        &>*{
+            transition: all ease .3s;
+        }
+    }
+</style>
