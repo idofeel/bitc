@@ -2017,6 +2017,14 @@ balanced-match@^1.0.0:
   resolved "https://registry.npm.taobao.org/balanced-match/download/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
+barrel-vue3@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/barrel-vue3/-/barrel-vue3-1.0.0.tgz#ca19c7898a1da6a83e287ad01380b9f76f4fb8dd"
+  integrity sha512-aAM8CTeLcJygHd0+UdaGZSX6HVMGEVpgCT2IByOXo5L5dUrpUpq6uao66/19yw8bznh0LMfRdoFe30tI4nGAtw==
+  dependencies:
+    core-js "^3.6.5"
+    vue "^3.0.0"
+
 base64-js@^1.0.2:
   version "1.5.1"
   resolved "https://registry.npm.taobao.org/base64-js/download/base64-js-1.5.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbase64-js%2Fdownload%2Fbase64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
@@ -8491,6 +8499,14 @@ vue-types@^3.0.0:
   integrity sha1-IOm6roZz3oCT0KmJI0aV0I1US+A=
   dependencies:
     is-plain-object "3.0.1"
+
+vue3-barrel@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue3-barrel/-/vue3-barrel-1.0.1.tgz#1373c3b13ae8a336e56541880dfee37234b0e829"
+  integrity sha512-qho0wrARWWh2lAsRSEDjhjs0QIn3bLvOI8lQS/589ma844Hfas/gRT4tTqGrGO3J+T0pIaCuvW7wWaRJifyiCw==
+  dependencies:
+    core-js "^3.6.5"
+    vue "^3.0.0"
 
 vue@^3.0.0:
   version "3.0.5"
