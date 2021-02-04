@@ -27,13 +27,18 @@ export default class WaterFallData {
         item.top = Math.min(...this.heightList)
         item.loaded = 1
       }
-      this.heightList[minIndex] += item.height || 100
+      // 高度的问题
+      const ch = this.getCurrentHeight(item.originWidth, item.originHeight, this.itemWidth)
+      this.heightList[minIndex] += ch
     })
     this.containerHeight = Math.max(...this.heightList, 0)
     this.data = this.data.length ? [...this.data, ...data] : data
     return this.iret()
   }
-
+  
+  getCurrentHeight(ow, oh, cw) {
+    return Math.floor((oh / ow * cw * 100) / 100)
+  }
   // 重置
   resize(itemWidth, colNum) {
     this.itemWidth = itemWidth

@@ -135,7 +135,8 @@ export default {
 
 	setup() {
 		const { dataList, getData, setReqParams } = useDataList()
-		const waterfallWidth = ref(172)
+		const waterfallWidth = ref(0)
+		const value = ref('')
 
 		const drawerVisible = ref(false)
 		function toggleDrawerVis(bl) {
@@ -147,18 +148,13 @@ export default {
 		}
 
 		onMounted(() => {
-			waterfallWidth.value = getAverage(
-				listRef.$el.offsetWidth,
-				waterfallWidth.value,
-				10
-			)
+			waterfallWidth.value = getAverage(listRef.$el.offsetWidth, 172, 10)
 		})
 
 		const startPage = () => {
 			setReqParams({})
 			getData()
 		}
-		const value = ref('')
 		return {
 			dataList,
 			listDom,

@@ -7,6 +7,7 @@ export default (itemWidth, data = []) => {
     list: data, // 瀑布流数据源
     containerWidth: '100%',
     containerHeight: 0,
+    itemWidth
   })
 
   const container = ref(null) // 父元素
@@ -29,19 +30,20 @@ export default (itemWidth, data = []) => {
   }
 
   const setContainerWidth = () => {
-    colNum = Math.floor(container.value.clientWidth / itemWidth) || 1
-    state.containerWidth = `${colNum * itemWidth}px`
+      if(!container.value)return;
+    colNum = Math.floor(container.value.clientWidth / state.itemWidth) || 1
+    state.containerWidth = `${colNum *  state.itemWidth}px`
   }
 
   const initWaterFall = () => {
     setContainerWidth()
-    waterfall = new WaterFallData(itemWidth, colNum)
+    waterfall = new WaterFallData( state.itemWidth, colNum)
   }
 
   const windowResize = debounce(() => {
     if (!waterfall) return
     setContainerWidth()
-    handleData(waterfall.resize(itemWidth, colNum))
+    handleData(waterfall.resize(state.itemWidth, colNum))
   })
 
   onMounted(() => {

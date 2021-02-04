@@ -67,9 +67,9 @@ export default {
 	emits: ['ready'],
 	setup(props, { emit }) {
 		const loadedData = ref([])
-
 		// 宽度+padding
-		const fullItemWidth = parseInt(props.width) + parseInt(props.gap)
+		const fullItemWidth = ref(parseInt(props.width) + parseInt(props.gap))
+
 		const {
 			list,
 			initData,
@@ -103,20 +103,24 @@ export default {
 			debounceInitData()
 		}
 
-		watch( 
-			props.data,
-			(data) => {
-				setState(mergeData(data, list.value))
+		watch(props.data, (data) => {
+			setState(mergeData(data, list.value))
+		})
+
+		watch(
+			() => props.width,
+			() => {
+				// 现在这个是只有宽度变化才刷新子组件
+				fullItemWidth.value = props.width + props.gap*1
 			}
 		)
-
 		return {
 			list,
 			container,
 			containerWidth,
 			containerHeight,
 			padding: computed(() => autoUnit(parseInt(props.gap) / 2)),
-			itemWidth: computed(() => autoUnit(fullItemWidth)),
+			itemWidth: computed(() => autoUnit(fullItemWidth.value)),
 			load: load,
 			loadedData
 		}
@@ -141,8 +145,8 @@ export default {
 	transition: opacity 0.5s 0.15s, left 0.3s, top 0.3s;
 	&.loaded {
 		opacity: 1;
-        visibility: visible;
-        box-sizing: border-box;
+		visibility: visible;
+		box-sizing: border-box;
 	}
 }
 
