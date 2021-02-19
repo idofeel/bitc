@@ -4,7 +4,7 @@
 			:data="list"
 			:baseHeight="320"
 			gap="20"
-			class="barrelLayout xs-hide"
+			class="barrelLayout sm-hide"
 		>
 			<template #default="item">
 				<div
@@ -27,7 +27,7 @@
 			:width="waterfallWidth"
 			:data="list"
 			:delay="true"
-			class="waterFallLayout xs-show"
+			class="waterFallLayout sm-show"
 		>
 			<template #default="item">
 				<div :key="item.id" class="item card">

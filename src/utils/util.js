@@ -29,7 +29,7 @@ export function mergeData(newData = [], oldData = []) {
 export function getAverage(total, baseNum, gap = 0) {
 	let maxCount = Math.round(total / baseNum)
 
-	const space = ((maxCount + 1) * gap) / 2
+	const space = maxCount * (gap * 1.5) 
 
 	return Math.floor((total - space) / maxCount)
 }

@@ -43,6 +43,7 @@ export default (itemWidth, data = []) => {
   const windowResize = debounce(() => {
     if (!waterfall) return
     setContainerWidth()
+    console.log(state.itemWidth);
     handleData(waterfall.resize(state.itemWidth, colNum))
   })
 

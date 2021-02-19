@@ -7,7 +7,6 @@ function preload(img) {
 }
 
 export default (images) => {
-	console.log('🚀 ~ file: loadImages.js ~ line 12 ~ images', images)
 	return Promise.all([...images].map((img) => preload(img)))
 }
 

@@ -28,8 +28,8 @@ export default class WaterFallData {
         item.loaded = 1
       }
       // 高度的问题
-      const ch = this.getCurrentHeight(item.originWidth, item.originHeight, this.itemWidth)
-      this.heightList[minIndex] += ch
+    //   const ch = this.getCurrentHeight(item.originWidth, item.originHeight, this.itemWidth)
+      this.heightList[minIndex] += item.height
     })
     this.containerHeight = Math.max(...this.heightList, 0)
     this.data = this.data.length ? [...this.data, ...data] : data
@@ -44,6 +44,8 @@ export default class WaterFallData {
     this.itemWidth = itemWidth
     this.colNum = colNum
     const data = this.data.map((item) => {
+        // 动态高度
+        item.height = item.el.offsetHeight || item.height
       item.loaded = 0
       return item
     })

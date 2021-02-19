@@ -1,35 +1,36 @@
 // 这个文件负责管理数据和逻辑处理
 
 import { onBeforeMount, reactive } from 'vue'
-// import request from '@/api'
-
-// // const { post } = request
+import request from '@/api'
+import _interface from '../../api/interface'
+const { get } = request
 
 export default function() {
 	let dataList = reactive([])
 
 	let requestParams = reactive({
-		currentPage: 1,
-		pageSize: 10
+		limit: 1,
+		page: 10
 	})
 
-	const setReqParams = (parmams) => {
+	const setReqParams = (params) => {
 		requestParams = {
 			...requestParams,
-			...parmams
+            ...params,
+            nodeId:1
 		}
 	}
 
 	const getData = async () => {
-		// const res = await post('/list', requestParams)
-		// if (res.success) {
-		// 	dataList.push(...res.data)
-		// 	requestParams.currentPage++
-		// }
+		const res = await get(_interface.listPageData, requestParams)
+		if (res.success) {
+			dataList.push(...res.data)
+			requestParams.limit++
+        }
 		const formatterData = (url) => {
             const name = url.replace(/(.jpg|.jpeg|.png)$/, '').split(' ')
 			return {
-				url,
+				url: require('@/assets/images/list/' + url),
 				title: name[1]+'_'+name[0],
 				praise: null
 			}
@@ -48,7 +49,8 @@ export default function() {
             '1926051 马万旭.jpg',
             '1926051 邬睿奇.jpeg',
             '1926501 张从儒.jpg',
-		].map(formatterData)
+        ].map(formatterData)
+        
 		dataList.push(...imgs)
 	}
 

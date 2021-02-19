@@ -143,10 +143,10 @@ export default {
 	visibility: hidden;
 	opacity: 0;
 	transition: opacity 0.5s 0.15s, left 0.3s, top 0.3s;
+    box-sizing: border-box;
 	&.loaded {
 		opacity: 1;
 		visibility: visible;
-		box-sizing: border-box;
 	}
 }
 
