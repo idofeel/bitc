@@ -52,6 +52,32 @@ request.interceptors.response.use((response) => {
 //   }
 // }
 
+/**
+ * @method get
+ * @param url 请求的url
+ * @param params 请求携带的参数
+ */
+function get(url, params) {
+    return request({
+      url,
+      method: 'get',
+      params
+    });
+  }
+  /**
+   * @method post
+   * @param url 请求的url
+   * @param params 请求携带的参数
+   */
+  function post(url, data) {
+    return request({
+      url,
+      method: 'post',
+      data
+    });
+  }
+  
+export { get, post };
 export default request
 
 // export {

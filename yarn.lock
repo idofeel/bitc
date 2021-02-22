@@ -8492,10 +8492,10 @@ vue-types@^3.0.0:
   dependencies:
     is-plain-object "3.0.1"
 
-vue3-barrel@^1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/vue3-barrel/-/vue3-barrel-1.12.0.tgz#83f44436f66ff593f4b94494689405787c1b13af"
-  integrity sha512-3nAgfoAJAfohPmC5sv4TZCY9+1YMMG+4EJXSzfU9rJD5u+bloRqxj80BsIA2ts3zlFge0qkxW8H+SXoPCfPPEw==
+vue3-barrel@^1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/vue3-barrel/-/vue3-barrel-1.12.1.tgz#c9e538589595a5c0663c0bfbd1c88ad7138f7b08"
+  integrity sha512-FMdUl51jXU7jpDYzsPXAuVF80ThUtTH+W+SeqgydKd6st9h41GDkN8/7qaA1pyH1jFDXLXkzsvxp0piVTPJ64Q==
   dependencies:
     core-js "^3.6.5"
     vue "^3.0.0"

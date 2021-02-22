@@ -27,15 +27,20 @@ export default {
             height: container.value ? container.value.clientHeight : 200
         })
         const delayLoad = async () => {
-            const res = await getImgInfo(props.item.url)
-        
+            let res = {}
+            try {
+                res = await getImgInfo(props.item.url)
+            } catch (error) {
+                console.log(error);
+                res.load
+            }
             // console.log('delayLoad,',res,container.value.clientHeight);
             // res.height = Math.floor(res.originHeight / res.originWidth * container.value.clientWidth *100 ) / 100
             // emit('load', {...props.item, ...res})
             setTimeout(() => {
                 res.height = container.value.clientHeight;
                 // emit('load', res)
-                emit('load', {...props.item, ...res, el: container.value})
+                emit('load', { ...props.item, ...res, el: container.value })
             }, 150)
         }
 

@@ -1,32 +1,46 @@
 // 这个文件负责管理数据和逻辑处理
 
-import { onBeforeMount, reactive } from 'vue'
-import request from '@/api'
-import _interface from '../../api/interface'
-const { get } = request
+import { onBeforeMount, onMounted,ref, reactive } from 'vue'
+import {get} from '@/api'
+import _interface from '@/api/interface'
 
 export default function() {
 	let dataList = reactive([])
-
+    const loading = ref(false)
+    const setLoading = bl => loading.value = !!bl;
 	let requestParams = reactive({
-		limit: 1,
-		page: 10
+        name: '',
+		page: 1, // 第几页
+		limit: 10 // 每页条数
 	})
 
 	const setReqParams = (params) => {
 		requestParams = {
 			...requestParams,
             ...params,
-            nodeId:1
+            nodeId: 1
 		}
 	}
 
 	const getData = async () => {
-		const res = await get(_interface.listPageData, requestParams)
-		if (res.success) {
-			dataList.push(...res.data)
-			requestParams.limit++
+        setLoading(true)
+        const res = await get(_interface.listPageData, requestParams)
+		if (res.code === 0) {
+            const formatterResData = (item) => {
+                return {
+                    title: item.name,
+                    url: item.cover,
+                    readNum: item.readNum,
+                    praise: item.showNumber
+                }
+            }
+			dataList.push(...res.data.map(formatterResData))
+			requestParams.page++
+            setLoading()
+            return
         }
+
+      
 		const formatterData = (url) => {
             const name = url.replace(/(.jpg|.jpeg|.png)$/, '').split(' ')
 			return {
@@ -59,12 +73,21 @@ export default function() {
 	}
 
 	onBeforeMount(getData)
+
+
+    onMounted(() => {
+            window.addEventListener('scroll',()=>{
+                
+            })
+    })
 	// 返回数据
 
 	return {
-		dataList,
-		getData,
+		dataList, // 当前数据源
+		getData, // 获取数据
+        loading,
 		setReqParams,
+        params: requestParams,
 		filterData
 	}
 }

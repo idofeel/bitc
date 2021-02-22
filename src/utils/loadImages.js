@@ -12,7 +12,7 @@ export default (images) => {
 
 export function getImgInfo(url) {
 	if (!url) return []
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
 		const img = new Image()
 		img.src = url
 		const run = () => {
@@ -26,6 +26,7 @@ export function getImgInfo(url) {
 				window.requestAnimationFrame(run)
 			}
 		}
+        img.onerror = reject
 		run()
 	})
 }

@@ -7,84 +7,36 @@
             <router-link to="/list">list</router-link>-->
         </div>
         <a-row>
-            <a-col :xs="24" :md="16" :ref="listDom">
+            <a-col :xs="24" :md="16">
                 <div class="header">
-                    <b></b>
-                    <a-input-search v-model:value="value" placeholder="请输入关键词" @search="onSearch" />
-                    <span></span>
-
-                    <FilterOutlined @click="toggleDrawerVis" class="filterIcon sm-show" />
+                    <a-input-search
+                        v-model:value="params.name"
+                        placeholder="请输入关键词"
+                        @search="getData"
+                        :loading="loading"
+                        enter-button
+                    />
+                    <FilterOutlined @click="toggleVisible" class="filterIcon ant-btn-link sm-show" />
                 </div>
-                <a-image-preview-group>
-                    <waterFall
-                        v-if="waterfallWidth > 0"
-                        :gap="gap"
-                        :width="waterfallWidth"
-                        :data="dataList"
-                        :delay="true"
-                    >
-                        <template #default="item">
-                            <div :key="item.id" class="item card">
-                                <a-image class="img" :src="item.url" placeholder />
-                                <h4>{{ item.title }}</h4>
-                                <div class="item_tags" v-if="item.tags && item.tags.length">
-                                    <a-tag
-                                        color="blue"
-                                        class="bitc_tag"
-                                        v-for="(tag, index) in item.tags"
-                                        :key="index"
-                                    >{{ tag }}</a-tag>
-                                </div>
-                                <div class="praise_icons">
-                                    <div class="iconfont">
-                                        <svg
-                                            t="1610680034604"
-                                            class="icon"
-                                            fill="currentColor"
-                                            viewBox="64 64 896 896"
-                                            version="1.1"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            p-id="1491"
-                                            width="1em"
-                                            height="1em"
-                                        >
-                                            <path
-                                                d="M660.8 430.4c1.6 0 4.8 0 6.4-1.6 8-3.2 11.2-12.8 8-20.8-4.8-11.2-11.2-22.4-19.2-33.6-4.8-6.4-16-8-22.4-3.2-6.4 4.8-8 16-3.2 22.4 6.4 8 11.2 17.6 16 27.2 3.2 4.8 8 9.6 14.4 9.6zM606.4 332.8c-24-12.8-49.6-19.2-75.2-19.2-36.8 0-72 12.8-99.2 35.2-6.4 4.8-8 16-3.2 22.4 3.2 3.2 8 6.4 12.8 6.4 3.2 0 6.4-1.6 9.6-3.2 40-32 96-36.8 140.8-12.8 8 4.8 17.6 1.6 22.4-6.4 1.6-9.6-1.6-19.2-8-22.4z"
-                                                p-id="1492"
-                                            />
-                                            <path
-                                                d="M785.6 510.4v-44.8c0-145.6-118.4-264-264-264S257.6 320 257.6 465.6v44.8c-48 14.4-80 57.6-80 107.2v80c0 62.4 49.6 112 112 112s112-49.6 112-112v-80c0-49.6-32-92.8-80-107.2v-44.8c0-110.4 89.6-200 200-200s200 89.6 200 200v44.8c-48 14.4-80 57.6-80 107.2v80c0 62.4 49.6 112 112 112s112-49.6 112-112v-80c0-49.6-32-92.8-80-107.2z m-448 107.2v80c0 27.2-20.8 48-48 48s-48-20.8-48-48v-80c0-27.2 20.8-48 48-48s48 20.8 48 48z m464 80c0 27.2-20.8 48-48 48s-48-20.8-48-48v-80c0-27.2 20.8-48 48-48s48 20.8 48 48v80z"
-                                                p-id="1493"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div class="like">
-                                        <LikeOutlined color="red" />
-                                        {{ item.praise }}
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </waterFall>
-                </a-image-preview-group>
+                <WaterfallList :data="dataList" />
+                <Divider v-if="!loading" class="no_more">没有更多了~</Divider>
                 <!-- <a-button @click="getData">
 					加载更多
                 </a-button>-->
             </a-col>
             <a-col :md="8" class="sm-hide">
-                <FilterCondtions  :condtions="condtions"/>
+                <FilterCondtions :condtions="condtions" />
             </a-col>
             <Drawer
                 title="筛选条件"
                 :visible="drawerVisible"
                 placement="right"
                 width="320"
-                @close="toggleDrawerVis(false)"
+                @close="toggleVisible(false)"
             >
                 <FilterCondtions :condtions="condtions" />
             </Drawer>
         </a-row>
-
         <!-- <a-spin size="large" /> -->
     </div>
 </template>
@@ -92,35 +44,36 @@
 <script>
 import { onMounted, ref, reactive } from 'vue'
 import useDataList from '@/views/listPage/dataList'
-import { getAverage } from '@/utils/util'
-import waterFall from '@/components/waterfall/water-fall'
-import { FilterOutlined, LikeOutlined } from '@ant-design/icons-vue'
-import { Drawer } from 'ant-design-vue'
+import { FilterOutlined } from '@ant-design/icons-vue'
+import { Drawer, Divider } from 'ant-design-vue'
 import FilterCondtions from './filterCondtions'
-
+import WaterfallList from './waterfallList.vue'
 export default {
     components: {
-        waterFall,
         FilterOutlined,
+        Divider,
+        WaterfallList,
         Drawer,
         FilterCondtions,
-        LikeOutlined
     },
 
     setup() {
+        // 列表数据和参数
+        const { dataList, params, getData, loading } = useDataList()
+
 
         const condtions = reactive([
-			{
-				title: '活动专题',
-				tags: [
+            {
+                title: '活动专题',
+                tags: [
                     { name: '抗疫有我 为爱发声', id: 1, checked: false },
                     { name: '行读', id: 2, checked: false },
                     { name: '经典朗诵', id: 3, checked: false },
                 ]
             },
             {
-				title: '班级',
-				tags: [
+                title: '班级',
+                tags: [
                     { name: '1826021', id: '1826021', checked: false },
                     { name: '1826022', id: '1826022', checked: false },
                     { name: '1826051', id: '1826051', checked: false },
@@ -128,65 +81,39 @@ export default {
                     { name: '1926021', id: '1926021', checked: false },
                     { name: '1926051', id: '1926051', checked: false },
                 ]
-			},
+            },
             {
-				title: '时间',
-				tags: [
+                title: '时间',
+                tags: [
                     { name: '2018年', id: '2018', checked: false },
                     { name: '2019年', id: '2019', checked: false },
                     { name: '2020年', id: '2020', checked: false },
                     { name: '2021年', id: '2021', checked: false },
                 ]
-			}
-		])
+            }
+        ])
 
-        const { dataList, getData, setReqParams } = useDataList()
-        const waterfallWidth = ref(0)
-        const value = ref('')
-        const gap = ref(12)
 
         const drawerVisible = ref(false)
-        function toggleDrawerVis(bl) {
-            if(bl === drawerVisible.value) return;
+        function toggleVisible(bl) {
+            if (bl === drawerVisible.value) return;
             drawerVisible.value = bl === undefined ? !!drawerVisible.value : bl
-        }
-        let listRef = null
-        const listDom = (el) => {
-            listRef = el
         }
 
         onMounted(() => {
-            waterfallWidth.value = getAverage(listRef.$el.offsetWidth, 172, gap.value)
-            window.addEventListener('resize', () => {
-                if (listRef.$el) {
-                    waterfallWidth.value = getAverage(listRef.$el.offsetWidth, 172, gap.value)
-                }
+            window.matchMedia('(max-width:768px)').addListener(function() {
+                toggleVisible(false)
             })
-
-            // 
-            window.matchMedia('(max-width:768px)').addListener(function(){
-                toggleDrawerVis(false)
-            })
-
         })
 
-
-
-        const startPage = () => {
-            setReqParams({})
-            getData()
-        }
         return {
-            gap,
             condtions,
             dataList,
-            listDom,
-            waterfallWidth,
+            loading,
             getData,
-            startPage,
-            value,
+            params,
             drawerVisible,
-            toggleDrawerVis
+            toggleVisible
         }
     }
 }
@@ -199,7 +126,7 @@ export default {
 
     .header {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         padding: 0 10px;
         margin-bottom: 10px;
@@ -211,84 +138,24 @@ export default {
         }
         .filterIcon {
             font-size: 24px;
-            color: #666;
+            margin-left: 10px;
         }
         .list_saerch {
             margin-bottom: 10px;
         }
 
         .ant-input-search {
+            padding: 10px 0;
             box-shadow: none !important;
-            width: 90%;
+            width: 95%;
             border: none;
-            border-bottom: 1px solid #e4e4e4;
+            // border-bottom: 1px solid #e4e4e4;
         }
     }
-}
-
-.listContent {
-    width: 800px;
-}
-
-.card {
-    background-color: white;
-    border-radius: 3px;
-    color: #666;
-    line-height: 1.5;
-    word-break: break-all;
-    box-shadow: 0 0 6px 2px #f5f5f5;
-    border-radius: 8px;
-    overflow: hidden;
-    /deep/& > .ant-image {
-        width: 100%;
+    .no_more {
+        padding: 10px 0;
+        color: #ccc;
+        font-size: 12px;
     }
-    .img {
-        width: 100%;
-        margin-bottom: 5px;
-        cursor: pointer;
-    }
-
-    h4 {
-        text-align: left;
-        padding: 10px;
-        margin: 0;
-    }
-    .item_tags {
-        display: flex;
-        padding: 0 10px;
-        text-align: left;
-        .bitc_tag {
-            margin-right: 5px;
-            margin-bottom: 5px;
-            padding: 0 4px;
-            &:last-child {
-                margin-right: 0;
-            }
-        }
-    }
-
-    .praise_icons {
-        padding: 0 10px;
-        padding-bottom: 10px;
-        text-align: right;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .iconfont {
-            svg {
-                color: #ccc;
-                font-size: 16px;
-                vertical-align: middle;
-            }
-        }
-        .like {
-            color: #ccc;
-            cursor: pointer;
-        }
-    }
-}
-.wrap {
-    position: relative;
 }
 </style>

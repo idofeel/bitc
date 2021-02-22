@@ -14,7 +14,8 @@ module.exports = {
 		proxy: {
 			// 配置多个！
 			'/api': {
-				target: 'http://localhost:8080/api',
+                // target: 'http://localhost:8080/api',
+                target: 'http://bitclib.jingshicorp.com:18030',
 				ws: true,
 				changeOrigin: true,
 				pathWrite: {
