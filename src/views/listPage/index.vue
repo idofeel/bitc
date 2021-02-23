@@ -1,5 +1,5 @@
 <template>
-    <div class="listPage lg_container">
+    <div class="listPage lg_container" ref="listPage">
         <div id="nav">
             <img :src="require('@/assets/logo1.png')" class="logo lg_container sm-hide" alt />
             <img :src="require('@/assets/logo2.png')" class="logo lg_container sm-show" alt />
@@ -12,14 +12,18 @@
                     <a-input-search
                         v-model:value="params.name"
                         placeholder="请输入关键词"
-                        @search="getData"
+                        @search="initData"
                         :loading="loading"
                         enter-button
                     />
                     <FilterOutlined @click="toggleVisible" class="filterIcon ant-btn-link sm-show" />
                 </div>
-                <WaterfallList :data="dataList" />
-                <Divider v-if="!loading" class="no_more">没有更多了~</Divider>
+                <!-- {{dataList}} -->
+                <WaterfallList @onReady="onReady" :data="dataList" />
+                <a-spin :spinning="loading"></a-spin>
+                <Empty :image="PRESENTED_IMAGE_SIMPLE" v-if="dataList.length === 0 && loadEnd"/>
+
+                <Divider v-if="loadEnd && dataList.length !== 0" class="no_more">没有更多了~</Divider>
                 <!-- <a-button @click="getData">
 					加载更多
                 </a-button>-->
@@ -45,13 +49,17 @@
 import { onMounted, ref, reactive } from 'vue'
 import useDataList from '@/views/listPage/dataList'
 import { FilterOutlined } from '@ant-design/icons-vue'
-import { Drawer, Divider } from 'ant-design-vue'
+import { Drawer, Divider, Empty } from 'ant-design-vue'
 import FilterCondtions from './filterCondtions'
 import WaterfallList from './waterfallList.vue'
+
+const { PRESENTED_IMAGE_SIMPLE } = Empty
+
 export default {
     components: {
         FilterOutlined,
         Divider,
+        Empty,
         WaterfallList,
         Drawer,
         FilterCondtions,
@@ -59,8 +67,9 @@ export default {
 
     setup() {
         // 列表数据和参数
-        const { dataList, params, getData, loading } = useDataList()
+        const { dataList, params, initData, nextPage, loading, loadEnd } = useDataList()
 
+        const listPage = ref(null)
 
         const condtions = reactive([
             {
@@ -100,20 +109,41 @@ export default {
             drawerVisible.value = bl === undefined ? !!drawerVisible.value : bl
         }
 
+       
+        const  loadFullScreen =  async () => {
+            let oTop = document.body.scrollTop === 0 ? document.documentElement.scrollTop : document.body.scrollTop;
+            let bottomOfWindow = document.documentElement.scrollHeight - (oTop + window.innerHeight) < 20;
+            if(bottomOfWindow) {
+               await nextPage()
+            }
+        }
+
+
+        function onReady(){
+            loadFullScreen()
+        }
         onMounted(() => {
             window.matchMedia('(max-width:768px)').addListener(function() {
                 toggleVisible(false)
             })
+            loadFullScreen()
+            // // 滚动加载
+            window.addEventListener('scroll',()=>{
+               loadFullScreen()
+            })
         })
-
         return {
+            loadEnd,
+            listPage,
             condtions,
+            onReady,
             dataList,
             loading,
-            getData,
+            initData,
             params,
             drawerVisible,
-            toggleVisible
+            toggleVisible,
+            PRESENTED_IMAGE_SIMPLE
         }
     }
 }
@@ -123,7 +153,7 @@ export default {
 .listPage {
     margin: 0 auto;
     box-sizing: border-box;
-
+    padding-bottom: 20px;
     .header {
         display: flex;
         justify-content: center;

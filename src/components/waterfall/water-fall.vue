@@ -14,18 +14,18 @@
 					padding: padding,
 					width: itemWidth,
 					left: `${item.left || 0}px`,
-					top: item.loaded ? `${item.top || 0}px` : '100%'
+					top: item.loaded ? `${item.top || 0}px` : '100%',
 				}"
 				@load="load(i, $event)"
 			>
 				<slot v-bind="item"></slot>
 			</water-fall-item>
 		</div>
-
+		<!-- 
 		<div v-if="loadedData.length < data.length" class="water-fall-more">
 			<i class="waterfall-loading"></i>
 			<span>加载中...</span>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -34,49 +34,48 @@ import { computed, watch, ref, nextTick } from 'vue'
 import { debounce } from '@halobear/utils/throttle-debounce'
 
 import useWaterfall from './composables/use-waterfall'
-import { autoUnit, mergeData } from '@/utils/util'
+import { autoUnit } from '@/utils/util'
 
 import WaterFallItem from './water-fall-item'
 
 export default {
 	name: 'WaterFall',
 	components: {
-		WaterFallItem
+		WaterFallItem,
 	},
 	props: {
 		data: {
 			type: Array,
-			default: () => []
+			default: () => [],
 			//   validator: (d = []) => {
 			//     return !d.length || d[0].key;
 			//   },
 		},
 		delay: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		gap: {
 			type: [Number, String],
-			default: 0
+			default: 0,
 		},
 		width: {
 			type: [Number, String],
-			default: 200
-		}
+			default: 200,
+		},
 	},
 	emits: ['ready'],
 	setup(props, { emit }) {
 		const loadedData = ref([])
 		// 宽度+padding
 		const fullItemWidth = ref(parseInt(props.width) + parseInt(props.gap))
-
 		const {
 			list,
 			initData,
 			setState,
 			container,
 			containerWidth,
-			containerHeight
+			containerHeight,
 		} = useWaterfall(fullItemWidth, props.data)
 
 		const debounceInitData = debounce(() => {
@@ -104,14 +103,17 @@ export default {
 		}
 
 		watch(props.data, (data) => {
-			setState(mergeData(data, list.value))
+			const urls = list.value.map((i) => i.url)
+			setState(
+				list.value.concat(data.filter((i) => !urls.includes(i.url)))
+			)
 		})
 
 		watch(
 			() => props.width,
 			() => {
 				// 现在这个是只有宽度变化才刷新子组件
-				fullItemWidth.value = props.width + props.gap*1
+				fullItemWidth.value = props.width + props.gap * 1
 			}
 		)
 		return {
@@ -122,9 +124,9 @@ export default {
 			padding: computed(() => autoUnit(parseInt(props.gap) / 2)),
 			itemWidth: computed(() => autoUnit(fullItemWidth.value)),
 			load: load,
-			loadedData
+			loadedData,
 		}
-	}
+	},
 }
 </script>
 
@@ -143,7 +145,7 @@ export default {
 	visibility: hidden;
 	opacity: 0;
 	transition: opacity 0.5s 0.15s, left 0.3s, top 0.3s;
-    box-sizing: border-box;
+	box-sizing: border-box;
 	&.loaded {
 		opacity: 1;
 		visibility: visible;

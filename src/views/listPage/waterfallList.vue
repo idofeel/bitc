@@ -7,6 +7,7 @@
             :width="waterfallWidth"
             :data="data"
             :delay="true"
+            @ready="ready"
         >
             <template #default="item">
                 <div :key="item.id" class="item card">
@@ -79,7 +80,8 @@ export default {
             default: () => []
         },
     },
-    setup() {
+	emits: ['onReady'],
+    setup(props, {emit}) {
         const gap = ref(16)
         const waterfallWidth = ref(0)
 
@@ -95,6 +97,10 @@ export default {
         }
 
 
+        function ready(){
+            emit('onReady')
+        }
+
         onMounted(() => {
             setWaterfallWith()
             window.addEventListener('resize', () => {
@@ -106,6 +112,7 @@ export default {
             gap,
             listDom,
             waterfallWidth,
+            ready
         }
     }
 }
