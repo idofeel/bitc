@@ -10,7 +10,7 @@
             @ready="ready"
         >
             <template #default="item">
-                <div :key="item.id" class="item card">
+                <div :key="item.id" class="item card" @click="$router.push({path:'/video',query:{id:item.id}})">
                     <a-image
                         class="img"
                         :src="item.url"

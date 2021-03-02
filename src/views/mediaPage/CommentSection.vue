@@ -60,17 +60,22 @@ import { Comment, List, tooltip as ATooltip } from 'ant-design-vue'
 import AFormItem from 'ant-design-vue/lib/form/FormItem'
 import ListItem from 'ant-design-vue/lib/list'
 import moment from 'moment';
+import { useRoute } from "vue-router";
 import WaterfallList from '../listPage/waterfallList.vue';
 import useDataList from '@/views/listPage/dataList'
+import useComment from '@/views/dataSource/useComment'
 
 export default {
     components: { Comment, AFormItem, List, ListItem, ATooltip, WaterfallList },
     setup() {
+        const router = useRoute();
         const { dataList } = useDataList()
+        const {commentList: data}= useComment(router.query.id)
 
         return {
             dataList,
-            data: [
+            data,
+            da2: [
                 {
                     actions: ['Reply to'],
                     author: '张三',

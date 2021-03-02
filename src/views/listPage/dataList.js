@@ -45,7 +45,7 @@ export default function () {
         if (res.code === 0) {
             const formatterResData = (item) => {
                 return {
-                    id: item.cover,
+                    id: item.id,
                     title: item.name,
                     url: item.cover,
                     readNum: item.readNum,

@@ -1,28 +1,26 @@
 <template>
     <div class="video_container">
         <div class="lg_container">
-            <h3>正在播放：标题标题</h3>
+            <h3>正在播放：{{data.name}}</h3>
 
             <div class="video_box">
-                <video controls src="https://www.w3school.com.cn/i/movie.ogg"></video>
+                <video controls :src="data.contentUrl"></video>
             </div>
             <div class="video_intro">
-                <h4>这是1个标题</h4>
+                <h4>{{data.name}}</h4>
                 <div class="content_intro">
                     <span class="mr20">
                         内容简介
                         <CaretDownOutlined />
                     </span>
-                    <a-tag color="#f50">标签1</a-tag>
-                    <a-tag color="#f50">标签2</a-tag>
-                    <a-tag color="#f50">标签3</a-tag>
-                    <a-tag color="#f50">标签4</a-tag>
+                    <a-tag color="#f50" v-if="data.keywords">{{item.keywords}}</a-tag>
                 </div>
                 <div>
                     <Descriptions class="video_desc" size="middle">
-                        <DescriptionsItem>提名：xx</DescriptionsItem>
-                        <DescriptionsItem span="2">责任者：xxx</DescriptionsItem>
-                        <DescriptionsItem span="2">简介：嘻嘻嘻嘻嘻嘻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻寻</DescriptionsItem>
+
+                        <DescriptionsItem>作者：{{data.author}}</DescriptionsItem>
+                        <DescriptionsItem>主题：{{data.theme}}</DescriptionsItem>
+                        <DescriptionsItem span="2">简介：{{data.content}}</DescriptionsItem>
                     </Descriptions>
                 </div>
             </div>
@@ -37,7 +35,10 @@
 import { Descriptions } from 'ant-design-vue'
 import { DescriptionsItem } from 'ant-design-vue/lib/descriptions'
 import { CaretDownOutlined } from '@ant-design/icons-vue'
+import { useRoute } from "vue-router";
 import CommentSection from './CommentSection.vue'
+import useDetails  from '@/views/dataSource/useDetails.js'
+
 export default {
     components: {
         Descriptions,
@@ -46,9 +47,10 @@ export default {
         CommentSection
     },
     setup() {
+        const router = useRoute();
+        const { data } = useDetails(router.query.id)
 
-
-        return {}
+        return {data}
     }
 }
 </script>

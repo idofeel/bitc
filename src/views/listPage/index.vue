@@ -49,16 +49,17 @@
       </a-col>
       <Drawer
         title="筛选条件"
+        wrapClassName="drawer_fc"
         :visible="drawerVisible"
         placement="right"
         width="320"
         @close="toggleVisible(false)"
       >
         <FilterCondtions :condtions="condtions" />
-        <a-col span="24">
-          <a-button>1</a-button>
-          <a-button type="primary">2</a-button>
-        </a-col>
+         <div class="drawer_footer">
+          <a-button style="margin-right: 8px" @click="toggleVisible(false)">取消</a-button>
+          <a-button type="primary" @click="toggleVisible(false)">保存</a-button>
+        </div>
       </Drawer>
     </a-row>
     <!-- <a-spin size="large" /> -->
@@ -98,39 +99,8 @@ export default {
     } = useDataList()
 
     const listPage = ref(null)
-
-    // const condtions = reactive([
-    //   {
-    //     title: '活动专题',
-    //     tags: [
-    //       { name: '抗疫有我 为爱发声', id: 1, checked: false },
-    //       { name: '行读', id: 2, checked: false },
-    //       { name: '经典朗诵', id: 3, checked: false }
-    //     ]
-    //   },
-    //   {
-    //     title: '班级',
-    //     tags: [
-    //       { name: '1826021', id: '1826021', checked: false },
-    //       { name: '1826022', id: '1826022', checked: false },
-    //       { name: '1826051', id: '1826051', checked: false },
-    //       { name: '1826052', id: '1826052', checked: false },
-    //       { name: '1926021', id: '1926021', checked: false },
-    //       { name: '1926051', id: '1926051', checked: false }
-    //     ]
-    //   },
-    //   {
-    //     title: '时间',
-    //     tags: [
-    //       { name: '2018年', id: '2018', checked: false },
-    //       { name: '2019年', id: '2019', checked: false },
-    //       { name: '2020年', id: '2020', checked: false },
-    //       { name: '2021年', id: '2021', checked: false }
-    //     ]
-    //   }
-    // ])
-
     const drawerVisible = ref(false)
+
     function toggleVisible(bl) {
       if (bl === drawerVisible.value) return
       drawerVisible.value = bl === undefined ? !!drawerVisible.value : bl
@@ -161,6 +131,7 @@ export default {
         loadFullScreen()
       })
     })
+
     return {
       ...useCateData(),
       loadEnd,
@@ -215,6 +186,33 @@ export default {
     padding: 10px 0;
     color: #ccc;
     font-size: 12px;
+  }
+}
+
+
+
+</style>
+
+<style lang="less">
+  // 外围容器
+.drawer_fc{
+  .ant-drawer-wrapper-body{
+    overflow: hidden;
+  }
+  .ant-drawer-body{
+    height:calc(100% - 55px - 55px);
+    overflow: auto;
+  }
+  .drawer_footer{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid #e8e8e8;
+        padding: 10px 16px;
+        text-align: right;
+        left: 0;
+        background: #fff;
+        border-radius: 0 0 4px 4px;
   }
 }
 </style>

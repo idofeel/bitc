@@ -7,5 +7,8 @@ export default {
     theme: 'interface/special/theme/attribute',
     grade: 'interface/special/grade/attribute',
     college: 'interface/special/college/attribute',
-
+    details: 'interface/special/', // {id}
+    // 评论
+    addComment: 'interface/special/comment',
+    getComment: 'interface/special/commentList'
 }
