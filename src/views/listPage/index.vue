@@ -55,6 +55,10 @@
         @close="toggleVisible(false)"
       >
         <FilterCondtions :condtions="condtions" />
+        <a-col span="24">
+          <a-button>1</a-button>
+          <a-button type="primary">2</a-button>
+        </a-col>
       </Drawer>
     </a-row>
     <!-- <a-spin size="large" /> -->
@@ -62,12 +66,13 @@
 </template>
 /
 <script>
-import { onMounted, ref, reactive } from 'vue'
+import { onMounted, ref } from 'vue'
 import useDataList from '@/views/listPage/dataList'
 import { FilterOutlined } from '@ant-design/icons-vue'
 import { Drawer, Divider, Empty } from 'ant-design-vue'
 import FilterCondtions from './filterCondtions'
 import WaterfallList from './waterfallList.vue'
+import useCateData from '@/views/dataSource/useCateData'
 
 const { PRESENTED_IMAGE_SIMPLE } = Empty
 
@@ -94,36 +99,36 @@ export default {
 
     const listPage = ref(null)
 
-    const condtions = reactive([
-      {
-        title: '活动专题',
-        tags: [
-          { name: '抗疫有我 为爱发声', id: 1, checked: false },
-          { name: '行读', id: 2, checked: false },
-          { name: '经典朗诵', id: 3, checked: false }
-        ]
-      },
-      {
-        title: '班级',
-        tags: [
-          { name: '1826021', id: '1826021', checked: false },
-          { name: '1826022', id: '1826022', checked: false },
-          { name: '1826051', id: '1826051', checked: false },
-          { name: '1826052', id: '1826052', checked: false },
-          { name: '1926021', id: '1926021', checked: false },
-          { name: '1926051', id: '1926051', checked: false }
-        ]
-      },
-      {
-        title: '时间',
-        tags: [
-          { name: '2018年', id: '2018', checked: false },
-          { name: '2019年', id: '2019', checked: false },
-          { name: '2020年', id: '2020', checked: false },
-          { name: '2021年', id: '2021', checked: false }
-        ]
-      }
-    ])
+    // const condtions = reactive([
+    //   {
+    //     title: '活动专题',
+    //     tags: [
+    //       { name: '抗疫有我 为爱发声', id: 1, checked: false },
+    //       { name: '行读', id: 2, checked: false },
+    //       { name: '经典朗诵', id: 3, checked: false }
+    //     ]
+    //   },
+    //   {
+    //     title: '班级',
+    //     tags: [
+    //       { name: '1826021', id: '1826021', checked: false },
+    //       { name: '1826022', id: '1826022', checked: false },
+    //       { name: '1826051', id: '1826051', checked: false },
+    //       { name: '1826052', id: '1826052', checked: false },
+    //       { name: '1926021', id: '1926021', checked: false },
+    //       { name: '1926051', id: '1926051', checked: false }
+    //     ]
+    //   },
+    //   {
+    //     title: '时间',
+    //     tags: [
+    //       { name: '2018年', id: '2018', checked: false },
+    //       { name: '2019年', id: '2019', checked: false },
+    //       { name: '2020年', id: '2020', checked: false },
+    //       { name: '2021年', id: '2021', checked: false }
+    //     ]
+    //   }
+    // ])
 
     const drawerVisible = ref(false)
     function toggleVisible(bl) {
@@ -157,9 +162,9 @@ export default {
       })
     })
     return {
+      ...useCateData(),
       loadEnd,
       listPage,
-      condtions,
       onReady,
       dataList,
       loading,
