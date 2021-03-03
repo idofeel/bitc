@@ -2,7 +2,7 @@
   <div class="comment_section">
     <h3>
       评论
-      <span>（已有 123123 条评论）</span>
+      <span>（已有 {{data.length}} 条评论）</span>
     </h3>
     <Comment>
       <template #content>
@@ -12,7 +12,7 @@
         <a-form-item class="submit_btn mt10">
           <a-button
             html-type="submit"
-            :loading="submitting"
+            :loading="addLoading"
             type="primary"
             @click="addComment"
             >发表评论</a-button
@@ -23,31 +23,31 @@
 
     <List
       class="comment-list"
-      :header="`${data.length} replies`"
+      :header="`${data.length} 条评论`"
       item-layout="horizontal"
       :data-source="data"
     >
       <template #renderItem="{ item }">
         <ListItem>
-          <Comment :author="item.author" :avatar="item.avatar">
+          <Comment :author="item.nickname" :avatar="item.avatar">
             <template #actions>
               <span v-for="(action, index) in item.actions" :key="index">{{
                 action
               }}</span>
             </template>
             <template #content>
-              <p>{{ item.content }}</p>
+              <p>{{ item.commentContent }}</p>
             </template>
             <template #datetime>
-              <a-tooltip :title="item.datetime.format('YYYY-MM-DD HH:mm:ss')">
-                <span>{{ item.datetime.fromNow() }}</span>
+              <a-tooltip :title="item.createDate">
+                <span>{{ item.createDate}}</span>
               </a-tooltip>
             </template>
           </Comment>
         </ListItem>
       </template>
     </List>
-    <div class="more_comment pv10">
+    <div class="more_comment pv10" v-if="false">
       <a-button>更多精彩评论>></a-button>
     </div>
 
@@ -74,7 +74,7 @@ export default {
     const router = useRoute()
     const uid = router.query.id * 1
     const { dataList } = useDataList()
-    const { commentList: data, addComment, commentParams } = useComment(uid)
+    const { commentList: data, addComment, commentParams,loading, addLoading } = useComment(uid)
 
     const detail = inject('detailData')
 
@@ -89,7 +89,8 @@ export default {
       dataList,
       data,
       addComment,
-      commentParams,
+      commentParams
+      ,loading, addLoading,
       da2: [
         {
           actions: ['Reply to'],

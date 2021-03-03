@@ -1,10 +1,13 @@
 import { onBeforeMount, reactive, toRefs, } from 'vue'
 import { get, post } from '@/api'
 import _interface from '@/api/interface'
+import { message } from 'ant-design-vue';
+
 export default function (id) {
     const response = reactive({
         commentList: [],
-        loading: false
+        loading: false,
+        addLoading: false
     })
 
     const commentParams = reactive({
@@ -22,7 +25,6 @@ export default function (id) {
         getCommentList()
     }
     const getCommentList = async () => {
-
         try {
             response.loading = true
             commentParams.objectId = id
@@ -38,16 +40,20 @@ export default function (id) {
     }
 
     const addComment = async () => {
-        console.log(commentParams);
         try {
+            response.addLoading = true
             const res = await post(_interface.addComment, commentParams)
-            if (res.code === 0) {
-                response.commentList = res.data
+            if (res.code === 0 || res.code === '0') {
+                commentParams.commentContent = ''
+                getCommentList()
+                message.success('评论成功，审核通过后可见')
+            } else {
+                throw new Error(res)
             }
         } catch (error) {
-            console.log(error);
+            message.error(error.msg || error)
         } finally {
-            response.loading = false
+            response.addLoading = false
         }
     }
 
