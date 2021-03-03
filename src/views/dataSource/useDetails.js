@@ -1,23 +1,23 @@
-import { onBeforeMount, reactive, ref,toRefs } from 'vue'
+import { onBeforeMount, reactive, ref, toRefs } from 'vue'
 import { get } from '@/api'
 import _interface from '@/api/interface'
 
-export default function(id) {
+export default function (id) {
     const response = reactive({
         data: {},
-        commentList:[]
+        commentList: []
     })
     const loading = ref(true)
     const setLoading = bl => loading.value = !!bl
 
-    const getData = async ()=>{
+    const getData = async () => {
         if (!id) return;
         getDetailData()
     }
     const getDetailData = async () => {
-            setLoading(true)
+        setLoading(true)
         try {
-        const res = await get(_interface.details+id)
+            const res = await get(_interface.details + id)
             if (res.code === 0) {
                 response.data = res.data
             }
@@ -33,5 +33,5 @@ export default function(id) {
     return {
         loading,
         ...toRefs(response),
-	}
+    }
 }

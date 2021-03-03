@@ -1,22 +1,32 @@
-import { onBeforeMount, reactive,toRefs } from 'vue'
-import { get } from '@/api'
+import { onBeforeMount, reactive, toRefs, } from 'vue'
+import { get, post } from '@/api'
 import _interface from '@/api/interface'
-
-export default function(id) {
+export default function (id) {
     const response = reactive({
         commentList: [],
         loading: false
     })
 
-    const getData = async ()=>{
+    const commentParams = reactive({
+        objectId: null, // 被评论对象ID
+        commentContent: '', // 评论
+        title: '', // 被评论对象标题
+        nickname: '', // 评论者昵称
+    })
+
+
+
+    const getData = async () => {
         if (!id) return;
+        commentParams.objectId = id
         getCommentList()
     }
     const getCommentList = async () => {
+
         try {
             response.loading = true
-
-        const res = await get(_interface.getComment, {objectId: id})
+            commentParams.objectId = id
+            const res = await get(_interface.getComment, { objectId: id })
             if (res.code === 0) {
                 response.commentList = res.data
             }
@@ -28,8 +38,9 @@ export default function(id) {
     }
 
     const addComment = async () => {
-           try {
-        const res = await get(_interface.getComment, {objectId: id})
+        console.log(commentParams);
+        try {
+            const res = await post(_interface.addComment, commentParams)
             if (res.code === 0) {
                 response.commentList = res.data
             }
@@ -40,11 +51,12 @@ export default function(id) {
         }
     }
 
-    
+
     onBeforeMount(getData)
 
     return {
         addComment,
+        commentParams,
         ...toRefs(response),
-	}
+    }
 }

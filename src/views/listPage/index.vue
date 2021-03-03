@@ -56,8 +56,10 @@
         @close="toggleVisible(false)"
       >
         <FilterCondtions :condtions="condtions" />
-         <div class="drawer_footer">
-          <a-button style="margin-right: 8px" @click="toggleVisible(false)">取消</a-button>
+        <div class="drawer_footer">
+          <a-button style="margin-right: 8px" @click="toggleVisible(false)"
+            >取消</a-button
+          >
           <a-button type="primary" @click="toggleVisible(false)">保存</a-button>
         </div>
       </Drawer>
@@ -188,31 +190,29 @@ export default {
     font-size: 12px;
   }
 }
-
-
-
 </style>
 
 <style lang="less">
-  // 外围容器
-.drawer_fc{
-  .ant-drawer-wrapper-body{
+// 外围容器
+.drawer_fc {
+  .ant-drawer-wrapper-body {
     overflow: hidden;
   }
-  .ant-drawer-body{
-    height:calc(100% - 55px - 55px);
+  .ant-drawer-body {
+    height: calc(100% - 55px - 55px);
     overflow: auto;
+    padding: 10px;
   }
-  .drawer_footer{
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        border-top: 1px solid #e8e8e8;
-        padding: 10px 16px;
-        text-align: right;
-        left: 0;
-        background: #fff;
-        border-radius: 0 0 4px 4px;
+  .drawer_footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #e8e8e8;
+    padding: 10px 16px;
+    text-align: right;
+    left: 0;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
   }
 }
 </style>
