@@ -2,7 +2,7 @@
   <div class="comment_section">
     <h3>
       评论
-      <span>（已有 {{data.length}} 条评论）</span>
+      <span>（已有 {{ data.length }} 条评论）</span>
     </h3>
     <Comment>
       <template #content>
@@ -14,6 +14,7 @@
             html-type="submit"
             :loading="addLoading"
             type="primary"
+            :disabled="!commentParams.commentContent"
             @click="addComment"
             >发表评论</a-button
           >
@@ -40,7 +41,7 @@
             </template>
             <template #datetime>
               <a-tooltip :title="item.createDate">
-                <span>{{ item.createDate}}</span>
+                <span>{{ item.createDate }}</span>
               </a-tooltip>
             </template>
           </Comment>
@@ -50,11 +51,6 @@
     <div class="more_comment pv10" v-if="false">
       <a-button>更多精彩评论>></a-button>
     </div>
-
-    <div class="more_comment pv10">
-      <h3>更多推荐</h3>
-      <WaterfallList :data="dataList" />
-    </div>
   </div>
 </template>
 
@@ -62,19 +58,22 @@
 import { Comment, List, tooltip as ATooltip } from 'ant-design-vue'
 import AFormItem from 'ant-design-vue/lib/form/FormItem'
 import ListItem from 'ant-design-vue/lib/list'
-import moment from 'moment'
-import WaterfallList from '../listPage/waterfallList.vue'
-import useDataList from '@/views/listPage/dataList'
+// import moment from 'moment'
 import useComment from '@/views/dataSource/useComment'
 import { inject, watch } from 'vue'
 import { useRoute } from 'vue-router'
 export default {
-  components: { Comment, AFormItem, List, ListItem, ATooltip, WaterfallList },
+  components: { Comment, AFormItem, List, ListItem, ATooltip },
   setup() {
     const router = useRoute()
     const uid = router.query.id * 1
-    const { dataList } = useDataList()
-    const { commentList: data, addComment, commentParams,loading, addLoading } = useComment(uid)
+    const {
+      commentList: data,
+      addComment,
+      commentParams,
+      loading,
+      addLoading
+    } = useComment(uid)
 
     const detail = inject('detailData')
 
@@ -86,30 +85,30 @@ export default {
     })
 
     return {
-      dataList,
       data,
       addComment,
-      commentParams
-      ,loading, addLoading,
-      da2: [
-        {
-          actions: ['Reply to'],
-          author: '张三',
-          avatar:
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-          content:
-            '是飒飒阿斯达啊实打实大声道阿斯达阿斯达阿斯达阿斯达阿斯达，啊实打实大声道，阿斯达阿斯达撒的阿斯达。',
-          datetime: moment().subtract(1, 'days')
-        },
-        {
-          actions: ['Reply to'],
-          author: '李四',
-          avatar:
-            'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-          content: '达，啊实打实大声道，阿斯达阿斯达撒的阿斯达。',
-          datetime: moment().subtract(2, 'days')
-        }
-      ]
+      commentParams,
+      loading,
+      addLoading
+      //   da2: [
+      //     {
+      //       actions: ['Reply to'],
+      //       author: '张三',
+      //       avatar:
+      //         'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      //       content:
+      //         '是飒飒阿斯达啊实打实大声道阿斯达阿斯达阿斯达阿斯达阿斯达，啊实打实大声道，阿斯达阿斯达撒的阿斯达。',
+      //       datetime: moment().subtract(1, 'days')
+      //     },
+      //     {
+      //       actions: ['Reply to'],
+      //       author: '李四',
+      //       avatar:
+      //         'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      //       content: '达，啊实打实大声道，阿斯达阿斯达撒的阿斯达。',
+      //       datetime: moment().subtract(2, 'days')
+      //     }
+      //   ]
     }
   }
 }
