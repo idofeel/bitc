@@ -4,10 +4,23 @@
       <h3>正在播放：{{ data.name }}</h3>
       <div class="audioContent">
         <div class="audio_box">
-          <img :src="data.cover" />
-          <p v-for="item in data.fe_lrc" :key="item.start">
-            {{ item.lrc }}
-          </p>
+          <div class="audio_cotnent">
+            <div class="audio_cover">
+              <img :src="data.cover" />
+            </div>
+            <div class="audioLrc">
+              <div class="empty" v-if="lrc.length === 0">暂无数据</div>
+              <p
+                v-for="(item, index) in lrc"
+                :key="item.start"
+                :class="currLine === index ? 'playLine' : ''"
+                class="sentence"
+                @dblclick="setCurrentTime(item.start, index)"
+              >
+                {{ item.lrc }}
+              </p>
+            </div>
+          </div>
           <audio :ref="audioRef" controls :src="data.contentUrl"></audio>
         </div>
         <div class="audio_intro">
@@ -50,7 +63,7 @@
 </template>
 
 <script>
-import { provide, onMounted } from 'vue'
+import { provide, onMounted, ref } from 'vue'
 import { Descriptions, Divider, Empty } from 'ant-design-vue'
 import { DescriptionsItem } from 'ant-design-vue/lib/descriptions'
 import { CaretDownOutlined } from '@ant-design/icons-vue'
@@ -80,9 +93,10 @@ export default {
       loadEnd
     } = useDataList()
     const router = useRoute()
-    const { data } = useDetails(router.query.id)
-    let AUDIO = null
+    const { data, lrc } = useDetails(router.query.id)
 
+    let AUDIO = null
+    const currLine = ref(null)
     const audioRef = (el) => (AUDIO = el)
 
     const loadFullScreen = async () => {
@@ -97,11 +111,28 @@ export default {
       }
     }
 
+    function setCurrentTime(ctime, index) {
+      currLine.value = index
+      AUDIO.currentTime = ctime
+      AUDIO.play()
+    }
+
     provide('detailData', data)
 
     onMounted(() => {
-      console.log(AUDIO)
-      AUDIO.addEventListener('timeupdate', () => {})
+      AUDIO.addEventListener('timeupdate', () => {
+        const ctime = AUDIO.currentTime
+        console.log(lrc.value, ctime)
+        lrc.value.some((item, index) => {
+          const next = ctime > item.start && ctime < item.end
+          if (next) {
+            console.log(index)
+            currLine.value = index
+          }
+          return next
+        })
+      })
+
       loadFullScreen()
       // // 滚动加载
       window.addEventListener('scroll', () => {
@@ -112,13 +143,16 @@ export default {
     return {
       audioRef,
       dataList,
+      currLine,
       params,
       initData,
       nextPage,
       loading,
       loadEnd,
       loadFullScreen,
-      data
+      data,
+      lrc,
+      setCurrentTime
     }
   }
 }
@@ -150,6 +184,12 @@ export default {
         outline: none;
       }
     }
+    .sentence {
+      cursor: pointer;
+    }
+    .playLine {
+      color: red;
+    }
   }
   .audio_intro {
     color: #333;
@@ -174,6 +214,32 @@ export default {
     border-bottom: 1px solid rgb(147, 156, 167);
   }
 }
+.audio_cotnent {
+  display: flex;
+  margin-bottom: 20px;
+  .audio_cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+  .audioLrc {
+    overflow: auto;
+    height: 300px;
+    width: 100%;
+    .empty {
+      height: inherit;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ccc;
+    }
+  }
+}
+
 .more_comment {
   padding-bottom: 20px;
   h3 {

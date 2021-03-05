@@ -5,6 +5,7 @@ import _interface from '@/api/interface'
 export default function (id) {
     const response = reactive({
         data: {},
+        lrc: [],
         commentList: []
     })
     const loading = ref(true)
@@ -27,7 +28,6 @@ export default function (id) {
 
     function formatterLrc (txt) {
         const txtList = txt.split(/[(\r\n)\r\n]+/).reduce((total, item, currentIndex) => {
-            console.log(item);
             const prev = total[currentIndex - 1]
             const arr = item.split(/^\[(.*?)\]\s/).filter(i => i)
 
@@ -39,9 +39,6 @@ export default function (id) {
             })
             return total
         }, [])
-        console.log(txtList);
-
-
         return txtList
     }
     const getDetailData = async () => {
@@ -50,7 +47,9 @@ export default function (id) {
             const res = await get(_interface.details + id)
             if (res.code === 0) {
                 response.data = res.data
-                response.data.fe_lrc = formatterLrc(await request.get(res.data.captions))
+                if (res.data.captions.endsWith('.txt')) {
+                    response.lrc = formatterLrc(await request.get(res.data.captions))
+                }
             }
         } catch (error) {
             console.log(error);

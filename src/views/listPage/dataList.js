@@ -16,8 +16,11 @@ export default function () {
 
     let requestParams = reactive({
         name: '',
+        college: '',
+        grade: '',
+        theme: '',
         page: 1, // 第几页
-        limit: 2 // 每页条数
+        limit: 20 // 每页条数
     })
 
     const setReqParams = (params) => {
@@ -49,7 +52,8 @@ export default function () {
                     title: item.name,
                     url: item.cover,
                     readNum: item.readNum,
-                    praise: item.showNumber
+                    praise: item.showNumber,
+                    type: item.type
                 }
             }
             const resData = res.data.map(formatterResData)

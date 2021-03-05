@@ -13,7 +13,12 @@
           <div
             :key="item.id"
             class="item card"
-            @click="$router.push({ path: '/video', query: { id: item.id } })"
+            @click="
+              $router.push({
+                path: item.type === 1 ? '/audio' : '/video',
+                query: { id: item.id }
+              })
+            "
           >
             <a-image
               class="img"
