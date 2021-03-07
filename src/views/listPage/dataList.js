@@ -25,8 +25,6 @@ export default function () {
 
     const setReqParams = (params) => {
         requestParams = Object.assign(requestParams, params)
-
-        console.log(requestParams);
     }
 
     const initData = async () => {
@@ -65,7 +63,7 @@ export default function () {
             // 	dataList.push(item)
             // })
             dataList.push(...resData)
-            console.log(dataList);
+            // console.log(dataList);
 
             // resData.forEach(e=>dataList.push())
 

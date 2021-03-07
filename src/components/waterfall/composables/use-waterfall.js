@@ -61,6 +61,9 @@ export default (itemWidth, data = []) => {
         initData,
         setState: (list) => {
             state.list = list
+            if (list.length === 0) {
+                waterfall.data = []
+            }
         },
     }
 }

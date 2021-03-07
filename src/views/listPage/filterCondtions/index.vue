@@ -9,7 +9,7 @@
             :key="idx"
             class="btn"
             :type="tag.checked ? 'primary' : 'default'"
-            @click="tag.checked = !tag.checked"
+            @click="tag.checked = !tag.checked;itemClick(tag, idx, condtions)"
             >{{ tag.name }}</a-button
           >
         </div>
@@ -29,15 +29,22 @@ export default defineComponent({
       default: () => []
     }
   },
-  setup() {
+  emits: ['itemClick'],
+  setup(props, {emit}) {
     const indicator = h(LoadingOutlined, {
       style: {
         fontSize: '24px'
       },
       spin: true
     })
+
+    function itemClick(item, index,condtions){
+      emit('itemClick', item, index,condtions)
+    }
+
     return {
-      indicator
+      indicator,
+      itemClick
     }
   }
 })

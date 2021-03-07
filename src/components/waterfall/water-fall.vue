@@ -4,7 +4,6 @@
       class="vue-waterfall"
       :style="{ width: containerWidth, height: `${containerHeight}px` }"
     >
-      <!-- {{ list }} -->
       <water-fall-item
         v-for="(item, i) in list"
         :key="item.key || item.id"
@@ -117,7 +116,6 @@ export default {
         loadedData.value = []
         containerHeight.value = 0
       }
-
       setState(newData)
       //   setState(list.value.concat(data.filter((i) => !urls.includes(i.url))))
     })
@@ -125,7 +123,6 @@ export default {
     watch(
       () => props.width,
       () => {
-        // 现在这个是只有宽度变化才刷新子组件
         fullItemWidth.value = props.width + props.gap * 1
       }
     )

@@ -102,7 +102,6 @@ export default {
     }
     let listRef = null
     const listDom = (el) => {
-      console.dir(el)
       listRef = el
     }
 

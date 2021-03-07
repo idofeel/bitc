@@ -107,6 +107,9 @@ export default function () {
 
     return {
         ...toRefs(loading),
+        getChecked: () => {
+            return  condtions.map(i=> i.tags.filter(j=>j.checked))
+        },
         condtions
     }
 }

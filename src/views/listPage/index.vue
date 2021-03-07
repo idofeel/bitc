@@ -45,7 +45,7 @@
                 </a-button>-->
       </a-col>
       <a-col :md="8" class="sm-hide">
-        <FilterCondtions :condtions="condtions" />
+        <FilterCondtions :condtions="condtions" @itemClick="itemClick"/>
       </a-col>
       <Drawer
         title="筛选条件"
@@ -55,7 +55,7 @@
         width="320"
         @close="toggleVisible(false)"
       >
-        <FilterCondtions :condtions="condtions" />
+        <FilterCondtions :condtions="condtions" @itemClick="itemClick" />
         <div class="drawer_footer">
           <a-button style="margin-right: 8px" @click="toggleVisible(false)"
             >取消</a-button
@@ -123,6 +123,21 @@ export default {
     function onReady() {
       loadFullScreen()
     }
+
+    const {getChecked,condtions} = useCateData()
+
+    function itemClick(){
+
+      const getCheckedName = ()=>{
+        const cnames = getChecked().map(i=>i.map(j=>j.name).join('_'));
+        return cnames
+      }
+      const [theme, grade, college] = getCheckedName()
+      params.theme = theme;
+      params.grade = grade;
+      params.college = college;
+      initData()
+    }
     onMounted(() => {
       window.matchMedia('(max-width:768px)').addListener(function() {
         toggleVisible(false)
@@ -135,7 +150,8 @@ export default {
     })
 
     return {
-      ...useCateData(),
+      condtions,
+      itemClick,
       loadEnd,
       listPage,
       onReady,

@@ -122,11 +122,9 @@ export default {
     onMounted(() => {
       AUDIO.addEventListener('timeupdate', () => {
         const ctime = AUDIO.currentTime
-        console.log(lrc.value, ctime)
         lrc.value.some((item, index) => {
           const next = ctime > item.start && ctime < item.end
           if (next) {
-            console.log(index)
             currLine.value = index
           }
           return next
