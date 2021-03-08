@@ -45,7 +45,19 @@
                 </a-button>-->
       </a-col>
       <a-col :md="8" class="sm-hide">
-        <FilterCondtions :condtions="condtions" @itemClick="itemClick"/>
+        <FilterCondtions :condtions="condtions" @itemClick="itemClick" />
+        <div class="drawer_footer">
+          <Divider />
+          <a-button style="margin-right: 8px" @click="toggleVisible(false)"
+            >取消</a-button
+          >
+          <a-button
+            type="primary"
+            :loading="loading"
+            @click="toggleVisible(false), initData()"
+            >保存</a-button
+          >
+        </div>
       </a-col>
       <Drawer
         title="筛选条件"
@@ -60,7 +72,12 @@
           <a-button style="margin-right: 8px" @click="toggleVisible(false)"
             >取消</a-button
           >
-          <a-button type="primary" @click="toggleVisible(false)">保存</a-button>
+          <a-button
+            :loading="loading"
+            type="primary"
+            @click="toggleVisible(false), initData()"
+            >保存</a-button
+          >
         </div>
       </Drawer>
     </a-row>
@@ -124,20 +141,19 @@ export default {
       loadFullScreen()
     }
 
-    const {getChecked,condtions} = useCateData()
+    const { getChecked, condtions } = useCateData()
 
-    function itemClick(){
-
-      const getCheckedName = ()=>{
-        const cnames = getChecked().map(i=>i.map(j=>j.name).join('_'));
+    function itemClick() {
+      const getCheckedName = () => {
+        const cnames = getChecked().map((i) => i.map((j) => j.name).join('_'))
         return cnames
       }
       const [theme, grade, college] = getCheckedName()
-      params.theme = theme;
-      params.grade = grade;
-      params.college = college;
-      initData()
+      params.theme = theme
+      params.grade = grade
+      params.college = college
     }
+
     onMounted(() => {
       window.matchMedia('(max-width:768px)').addListener(function() {
         toggleVisible(false)

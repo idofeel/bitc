@@ -66,7 +66,7 @@ export default {
     function layoutResize() {
       if (!listRef || !listRef.offsetWidth) return
       // 设置瀑布流单个的宽度
-      waterfallWidth.value = getAverage(listRef.offsetWidth, 172, 20)
+      waterfallWidth.value = getAverage(listRef.offsetWidth, 400, 20)
     }
     onMounted(() => {
       layoutResize()

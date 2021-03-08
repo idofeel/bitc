@@ -40,6 +40,7 @@
             <div class="praise_icons">
               <div class="iconfont">
                 <svg
+                  v-if="item.type === 2"
                   t="1610680034604"
                   class="icon"
                   fill="currentColor"
@@ -59,7 +60,10 @@
                     p-id="1493"
                   />
                 </svg>
-                {{ item.readNum }}
+
+                <PlayCircleOutlined v-else color="red" />
+
+                <span v-if="item.readNum">{{ item.readNum }}</span>
               </div>
               <div class="like">
                 <LikeOutlined color="red" />
@@ -77,10 +81,11 @@
 import { onMounted, ref } from 'vue'
 import { getAverage } from '@/utils/util'
 import waterFall from '@/components/waterfall/water-fall'
-import { LikeOutlined } from '@ant-design/icons-vue'
+import { LikeOutlined, PlayCircleOutlined } from '@ant-design/icons-vue'
 export default {
   components: {
     waterFall,
+    PlayCircleOutlined,
     LikeOutlined
   },
 
@@ -97,7 +102,7 @@ export default {
 
     const setWaterfallWith = () => {
       if (listRef) {
-        waterfallWidth.value = getAverage(listRef.offsetWidth, 172, gap.value)
+        waterfallWidth.value = getAverage(listRef.offsetWidth, 210, gap.value)
       }
     }
     let listRef = null
