@@ -40,7 +40,7 @@
             <div class="praise_icons">
               <div class="iconfont">
                 <svg
-                  v-if="item.type === 2"
+                  v-if="item.type === 1"
                   t="1610680034604"
                   class="icon"
                   fill="currentColor"
@@ -61,7 +61,7 @@
                   />
                 </svg>
 
-                <PlayCircleOutlined v-else color="red" />
+                <PlayCircleOutlined v-else/>
 
                 <span v-if="item.readNum">{{ item.readNum }}</span>
               </div>

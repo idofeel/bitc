@@ -8,7 +8,7 @@
             <div class="audio_cover">
               <img :src="data.cover" />
             </div>
-            <div class="audioLrc">
+            <div class="audioLrc" :ref="audioContainerRef">
               <div class="empty" v-if="lrc.length === 0">暂无数据</div>
               <p
                 v-for="(item, index) in lrc"
@@ -99,6 +99,10 @@ export default {
     const currLine = ref(null)
     const audioRef = (el) => (AUDIO = el)
 
+    let audioContainer = null
+    const audioContainerRef = (el) => (audioContainer = el)
+
+
     const loadFullScreen = async () => {
       let oTop =
         document.body.scrollTop === 0
@@ -117,6 +121,25 @@ export default {
       AUDIO.play()
     }
 
+
+    function scrollLrc(){
+      
+      // const boxHeight = audioContainer.clientHeight;
+      // const scrollHeight = audioContainer.scrollHeight;
+
+      const currentPlayDom = audioContainer.children[currLine.value]
+
+      const top = currentPlayDom.offsetTop - audioContainer.offsetTop ;
+
+      const currentScroll = top + currentPlayDom.offsetHeight
+
+      console.log(top,currentScroll)
+
+      audioContainer.scrollTop = 30
+
+      
+    }
+
     provide('detailData', data)
 
     onMounted(() => {
@@ -126,6 +149,7 @@ export default {
           const next = ctime > item.start && ctime < item.end
           if (next) {
             currLine.value = index
+            scrollLrc()
           }
           return next
         })
@@ -140,6 +164,7 @@ export default {
 
     return {
       audioRef,
+      audioContainerRef,
       dataList,
       currLine,
       params,
