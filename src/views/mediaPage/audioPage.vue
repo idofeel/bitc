@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { provide, onMounted, ref } from 'vue'
+import { provide, onMounted, ref, watch } from 'vue'
 import { Descriptions, Divider, Empty } from 'ant-design-vue'
 import { DescriptionsItem } from 'ant-design-vue/lib/descriptions'
 import { CaretDownOutlined } from '@ant-design/icons-vue'
@@ -102,7 +102,6 @@ export default {
     let audioContainer = null
     const audioContainerRef = (el) => (audioContainer = el)
 
-
     const loadFullScreen = async () => {
       let oTop =
         document.body.scrollTop === 0
@@ -121,23 +120,62 @@ export default {
       AUDIO.play()
     }
 
+    watch(currLine, () => {
+      wheel = false
+    })
 
-    function scrollLrc(){
-      
-      // const boxHeight = audioContainer.clientHeight;
-      // const scrollHeight = audioContainer.scrollHeight;
+    let timer = null
+    let start = 0
+    let wheel = false
+    let speed = 1
+
+    function scrollLrc() {
+      if (wheel) return
+      const boxCenterHeight = audioContainer.clientHeight / 2
+      const scrollHeight = audioContainer.scrollHeight
 
       const currentPlayDom = audioContainer.children[currLine.value]
+      // 当前距离顶部的高度 - 初始的高度
+      const scrollTop = currentPlayDom.offsetTop - audioContainer.offsetTop
 
-      const top = currentPlayDom.offsetTop - audioContainer.offsetTop ;
+      const currentScroll =
+        scrollTop > boxCenterHeight ? scrollTop - boxCenterHeight : 0
+      //   if (audioContainer.clientHeight >= audioContainer.clientHeight) {
+      //     cancelAnimationFrame(timer)
+      //     console.log('滚不动了')
+      //   }
 
-      const currentScroll = top + currentPlayDom.offsetHeight
+      function updateScroll() {
+        if (scrollHeight - audioContainer.clientHeight <= start) {
+          start = 0
+          return cancelAnimationFrame(timer)
+        }
+        const count = speed / 20
 
-      console.log(top,currentScroll)
+        if (currentScroll < audioContainer.scrollTop) {
+          // 向上滚动 audioContainer.scrollTop - currentScroll
 
-      audioContainer.scrollTop = 30
+          start = audioContainer.scrollTop - count
+        } else {
+          // 向下滚动 audioContainer.scrollTop - currentScroll
+          start = audioContainer.scrollTop + count
+        }
+        if (start > currentScroll) {
+          start = currentScroll
+        }
+        if (start === currentScroll) {
+          cancelAnimationFrame(timer)
+        } else {
+          timer = requestAnimationFrame(updateScroll)
+        }
+        audioContainer.scrollTop = start
+      }
 
-      
+      if (audioContainer.scrollTop !== currentScroll) {
+        wheel = true
+        speed = currentScroll - audioContainer.scrollTop
+        updateScroll()
+      }
     }
 
     provide('detailData', data)
@@ -155,6 +193,12 @@ export default {
         })
       })
 
+      window.addEventListener('wheel', () => {
+        wheel = true
+      })
+      window.addEventListener('touchmove', () => {
+        wheel = true
+      })
       loadFullScreen()
       // // 滚动加载
       window.addEventListener('scroll', () => {
