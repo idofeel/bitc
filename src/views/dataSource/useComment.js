@@ -7,7 +7,8 @@ export default function (id) {
     const response = reactive({
         commentList: [],
         loading: false,
-        addLoading: false
+        addLoading: false,
+        imgCode: ''
     })
 
     const commentParams = reactive({
@@ -15,6 +16,7 @@ export default function (id) {
         commentContent: '', // 评论
         title: '', // 被评论对象标题
         nickname: '', // 评论者昵称
+        code: ''
     })
 
 
@@ -48,13 +50,17 @@ export default function (id) {
                 getCommentList()
                 message.success('评论成功，审核通过后可见')
             } else {
-                throw new Error(res)
+                throw new Error(res.msg)
             }
         } catch (error) {
-            message.error(error.msg || error)
+            message.error(error.message)
         } finally {
             response.addLoading = false
         }
+    }
+
+    const setVerCode = function () {
+        response.imgCode = process.env.VUE_APP_BASE_URL + _interface.getGifCode + '?' + Date.now()
     }
 
 
@@ -63,6 +69,7 @@ export default function (id) {
     return {
         addComment,
         commentParams,
+        setVerCode,
         ...toRefs(response),
     }
 }

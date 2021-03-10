@@ -1,7 +1,7 @@
 <template>
   <div class="audio_container ">
     <div class="lg_container">
-      <h3>正在播放：{{ data.name }}</h3>
+      <h3 style="text-align:center;">正在播放：{{ data.name }}</h3>
       <div class="audioContent">
         <div class="audio_box">
           <div class="audio_cotnent">

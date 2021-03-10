@@ -10,12 +10,34 @@
           <a-textarea :rows="4" v-model:value="commentParams.commentContent" />
         </a-form-item>
         <a-form-item class="submit_btn mt10">
+          <a-modal
+            v-model:visible="modal2Visible"
+            title="请输入验证码"
+            centered
+            cancelText="取消"
+            okText="提交"
+            :confirmLoading="addLoading"
+            @ok="addComment"
+          >
+            <div>
+              <a-input
+                placeholder="请输入验证码"
+                v-model:value="commentParams.code"
+                maxlength="4"
+              >
+                <template #addonAfter>
+                  <img :src="imgCode" alt="" @click="setVerCode" />
+                </template>
+              </a-input>
+            </div>
+          </a-modal>
+
           <a-button
             html-type="submit"
             :loading="addLoading"
             type="primary"
             :disabled="!commentParams.commentContent"
-            @click="addComment"
+            @click="setModal2Visible(true)"
             >发表评论</a-button
           >
         </a-form-item>
@@ -55,15 +77,27 @@
 </template>
 
 <script>
-import { Comment, List, tooltip as ATooltip } from 'ant-design-vue'
+import {
+  Comment,
+  List,
+  tooltip as ATooltip,
+  Modal as AModal
+} from 'ant-design-vue'
 import AFormItem from 'ant-design-vue/lib/form/FormItem'
 import ListItem from 'ant-design-vue/lib/list'
 // import moment from 'moment'
 import useComment from '@/views/dataSource/useComment'
-import { inject, watch } from 'vue'
+import { inject, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 export default {
-  components: { Comment, AFormItem, List, ListItem, ATooltip },
+  components: {
+    Comment,
+    AFormItem,
+    List,
+    ListItem,
+    ATooltip,
+    AModal
+  },
   setup() {
     const router = useRoute()
     const uid = router.query.id * 1
@@ -72,7 +106,9 @@ export default {
       addComment,
       commentParams,
       loading,
-      addLoading
+      addLoading,
+      setVerCode,
+      imgCode
     } = useComment(uid)
 
     const detail = inject('detailData')
@@ -84,12 +120,24 @@ export default {
       }
     })
 
+    const modal2Visible = ref(false)
+
+    const setModal2Visible = (visible) => {
+      modal2Visible.value = visible
+      setVerCode()
+    }
+
     return {
       data,
       addComment,
       commentParams,
       loading,
-      addLoading
+      addLoading,
+      setVerCode,
+      imgCode,
+      modal2Visible,
+      setModal2Visible
+
       //   da2: [
       //     {
       //       actions: ['Reply to'],

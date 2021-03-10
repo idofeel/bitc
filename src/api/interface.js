@@ -10,5 +10,7 @@ export default {
     details: 'interface/special/', // {id}
     // 评论
     addComment: 'interface/special/comment',
-    getComment: 'interface/special/commentList'
+    getComment: 'interface/special/commentList',
+    // 验证码
+    getGifCode: '/vendor/getGifCode'
 }
