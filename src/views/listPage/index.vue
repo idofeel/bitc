@@ -55,7 +55,7 @@
             type="primary"
             :loading="loading"
             @click="toggleVisible(false), initData()"
-            >保存</a-button
+            >筛选</a-button
           >
         </div>
       </a-col>
@@ -76,7 +76,8 @@
             :loading="loading"
             type="primary"
             @click="toggleVisible(false), initData()"
-            >保存</a-button
+            >筛选
+            </a-button
           >
         </div>
       </Drawer>
@@ -94,6 +95,7 @@ import FilterCondtions from './filterCondtions'
 import WaterfallList from './waterfallList.vue'
 import useCateData from '@/views/dataSource/useCateData'
 
+
 const { PRESENTED_IMAGE_SIMPLE } = Empty
 
 export default {
@@ -103,7 +105,7 @@ export default {
     Empty,
     WaterfallList,
     Drawer,
-    FilterCondtions
+    FilterCondtions,
   },
 
   setup() {
@@ -176,7 +178,6 @@ export default {
       initData,
       params,
       drawerVisible,
-      toggleVisible,
       PRESENTED_IMAGE_SIMPLE
     }
   }

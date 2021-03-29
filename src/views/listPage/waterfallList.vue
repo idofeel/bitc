@@ -66,7 +66,7 @@
                 <span v-if="item.readNum">{{ item.readNum }}</span>
               </div>
               <div class="like">
-                <LikeOutlined color="red" />
+                <LikeOutlined color="red" @click.stop="test"/>
                 {{ item.praise }}
               </div>
             </div>
@@ -74,6 +74,7 @@
         </template>
       </waterFall>
     </a-image-preview-group>
+    <Share :ref="shareDom"/>
   </div>
 </template>
 
@@ -82,11 +83,13 @@ import { onMounted, ref } from 'vue'
 import { getAverage } from '@/utils/util'
 import waterFall from '@/components/waterfall/water-fall'
 import { LikeOutlined, PlayCircleOutlined } from '@ant-design/icons-vue'
+import Share from '@/components/share/share.vue'
 export default {
   components: {
     waterFall,
     PlayCircleOutlined,
-    LikeOutlined
+    LikeOutlined,
+    Share
   },
 
   props: {
@@ -110,10 +113,20 @@ export default {
       listRef = el
     }
 
+
+    let share = null
+
+  const shareDom = (el) => {
+      share = el
+    }
+  function test(){
+    console.log(share);
+    share.toggleShareVisbible(true)
+  } 
+
     function ready() {
       emit('onReady')
     }
-
     onMounted(() => {
       setWaterfallWith()
       window.addEventListener('resize', () => {
@@ -124,7 +137,9 @@ export default {
       gap,
       listDom,
       waterfallWidth,
-      ready
+      ready,
+      shareDom,
+      test
     }
   }
 }
