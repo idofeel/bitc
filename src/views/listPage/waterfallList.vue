@@ -130,7 +130,8 @@ export default {
         title: item.title,
         url:
           window.location.origin +
-          `/#/${item.type === 1 ? 'audio' : 'video'}?id=${item.id}`,
+          location.pathname +
+          `#/${item.type === 1 ? 'audio' : 'video'}?id=${item.id}`,
         image: item.url
       });
     }

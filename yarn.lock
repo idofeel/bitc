@@ -7568,11 +7568,6 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-social-share@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/social-share/-/social-share-0.1.0.tgz#2b2aa93c85efcdc7146816e758b381b20463dddd"
-  integrity sha1-KyqpPIXvzccUaBbnWLOBsgRj3d0=
-
 sockjs-client@^1.5.0:
   version "1.5.0"
   resolved "https://registry.npm.taobao.org/sockjs-client/download/sockjs-client-1.5.0.tgz?cache=0&sync_timestamp=1596410484246&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsockjs-client%2Fdownload%2Fsockjs-client-1.5.0.tgz#2f8ff5d4b659e0d092f7aba0b7c386bd2aa20add"

@@ -1,7 +1,5 @@
 
 import { ref, reactive, nextTick, onMounted } from 'vue'
-
-
 import '@/assets/social-share/js/social-share.js'
 
 
