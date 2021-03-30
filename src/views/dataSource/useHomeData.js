@@ -1,18 +1,19 @@
 import { onBeforeMount, reactive, ref } from 'vue'
 import { get } from '@/api'
 import _interface from '@/api/interface'
-export default function() {
+export default function () {
     const list = reactive([])
     const loading = ref(true)
     const setLoading = bl => loading.value = !!bl
-    const getHomeData = async ()=>{
+    const getHomeData = async () => {
 
         try {
             const res = await get(_interface.homePage)
 
-            if(res.code === 0){
-                list.push(...res.data.map(item=>{
+            if (res.code === 0) {
+                list.push(...res.data.map(item => {
                     return {
+                        ...item,
                         url: item.cover,
                         title: item.name
                     }
@@ -24,7 +25,7 @@ export default function() {
         }
 
 
-    } 
+    }
 
     onBeforeMount(getHomeData)
 
@@ -32,5 +33,5 @@ export default function() {
     return {
         loading,
         list
-	}
+    }
 }

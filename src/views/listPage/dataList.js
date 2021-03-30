@@ -3,7 +3,7 @@
 import { onBeforeMount, onMounted, ref, reactive } from 'vue'
 import { get } from '@/api'
 import _interface from '@/api/interface'
-
+import { useRouter } from 'vue-router'
 export default function () {
     let dataList = reactive([])
 
@@ -13,8 +13,9 @@ export default function () {
     const setLoading = bl => loading.value = !!bl;
     const setloadEnd = bl => loadEnd.value = !!bl;
 
-
+    const { currentRoute } = useRouter()
     let requestParams = reactive({
+        nodeId: currentRoute.value.query.id,
         name: '',
         college: '',
         grade: '',
@@ -78,6 +79,11 @@ export default function () {
             }
             setLoading()
             return
+        } else {
+            dataList = []
+            // dataList.splice(0, dataList.length)
+            setloadEnd(true)
+            setLoading(false)
         }
 
         // const formatterData = (url) => {

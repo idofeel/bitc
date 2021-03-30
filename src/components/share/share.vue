@@ -1,37 +1,38 @@
 <template>
-    <a-modal 
+  <a-modal
     title="分享至："
     placement="bottom"
-    :closable="false"
     v-model:visible="shareVisible"
     @close="toggleShareVisbible(false)"
-     style="top: 200px"
-    
+    :footer="null"
+    centered
   >
     <div class="social-share"></div>
-  </a-modal >
+  </a-modal>
 </template>
 
 <script>
-import {  Modal} from 'ant-design-vue'
-import useShareData from '@/components/share/useShareData'
+import { Modal } from 'ant-design-vue';
+import useShareData from '@/components/share/useShareData';
 
 export default {
- components: {
-    AModal:Modal
-  },   
-  setup(){
-      return {
-        ...useShareData()
-      }
+  components: {
+    AModal: Modal
+  },
+  setup(props) {
+    return {
+      ...useShareData(props)
+    };
   }
-}
+};
 </script>
 
-
 <style lang="less">
-.social-share{
-  height:40px
+.social-share {
+  height: 40px;
 }
-  
+.social-share.share-component {
+  display: flex;
+  justify-content: space-around;
+}
 </style>

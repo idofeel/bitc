@@ -15,7 +15,7 @@
                 item.height
               }px;padding:${item.margin / 2}px`
             "
-            @click="$router.push('/list')"
+            @click="goListPage(item)"
           >
             <img :src="item.src" alt />
           </div>
@@ -32,7 +32,7 @@
         class="waterFallLayout sm-show"
       >
         <template #default="item">
-          <div :key="item.id" class="item card" @click="$router.push('/list')">
+          <div :key="item.id" class="item card" @click="goListPage(item)">
             <img :src="item.url" alt />
           </div>
         </template>
@@ -41,13 +41,14 @@
   </div>
 </template>
 <script>
-import { onMounted, ref } from 'vue'
-import Vue3Barrel from 'vue3-barrel'
-import { mediaMatches, getAverage } from '@/utils/util'
-import waterFall from '@/components/waterfall/water-fall'
-import useHomeData from '@/views/dataSource/useHomeData'
+import { onMounted, ref } from 'vue';
+import Vue3Barrel from 'vue3-barrel';
+import { mediaMatches, getAverage } from '@/utils/util';
+import waterFall from '@/components/waterfall/water-fall';
+import useHomeData from '@/views/dataSource/useHomeData';
+import { useRouter } from 'vue-router';
 
-mediaMatches()
+mediaMatches();
 export default {
   name: 'Home',
   components: {
@@ -55,32 +56,43 @@ export default {
     waterFall
   },
   setup() {
-    const waterfallWidth = ref(0)
-    const { list, loading } = useHomeData()
-
-    let listRef = null
+    const waterfallWidth = ref(0);
+    const { list, loading } = useHomeData();
+    const { push } = useRouter();
+    let listRef = null;
     const listDom = (el) => {
-      listRef = el
-    }
+      listRef = el;
+    };
 
     function layoutResize() {
-      if (!listRef || !listRef.offsetWidth) return
+      if (!listRef || !listRef.offsetWidth) return;
       // 设置瀑布流单个的宽度
-      waterfallWidth.value = getAverage(listRef.offsetWidth, 400, 20)
+      waterfallWidth.value = getAverage(listRef.offsetWidth, 400, 20);
     }
+
+    function goListPage(item) {
+      push({
+        path: '/list',
+        query: {
+          id: item.id
+        }
+      });
+    }
+
     onMounted(() => {
-      layoutResize()
-      window.addEventListener('resize', layoutResize)
-    })
+      layoutResize();
+      window.addEventListener('resize', layoutResize);
+    });
 
     return {
       loading,
       list,
       waterfallWidth,
-      listDom
-    }
+      listDom,
+      goListPage
+    };
   }
-}
+};
 </script>
 
 <style lang="less" scope>

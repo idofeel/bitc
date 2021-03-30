@@ -19,6 +19,13 @@
           <Descriptions class="video_desc" size="middle">
             <DescriptionsItem>作者：{{ data.author }}</DescriptionsItem>
             <DescriptionsItem>主题：{{ data.theme }}</DescriptionsItem>
+            <DescriptionsItem>学院：{{ data.college }}</DescriptionsItem>
+            <DescriptionsItem
+              >类型：{{ data.type === 0 ? '视频' : '音频' }}</DescriptionsItem
+            >
+            <DescriptionsItem
+              >资源类型：{{ data.resourceType }}</DescriptionsItem
+            >
             <DescriptionsItem span="2"
               >简介：{{ data.content }}</DescriptionsItem
             >
@@ -46,15 +53,15 @@
 </template>
 
 <script>
-import { provide, onMounted } from 'vue'
-import { Descriptions, Divider, Empty } from 'ant-design-vue'
-import { DescriptionsItem } from 'ant-design-vue/lib/descriptions'
-import { CaretDownOutlined } from '@ant-design/icons-vue'
-import { useRoute } from 'vue-router'
-import CommentSection from './CommentSection.vue'
-import useDetails from '@/views/dataSource/useDetails.js'
-import WaterfallList from '../listPage/waterfallList.vue'
-import useDataList from '@/views/listPage/dataList'
+import { provide, onMounted } from 'vue';
+import { Descriptions, Divider, Empty } from 'ant-design-vue';
+import { DescriptionsItem } from 'ant-design-vue/lib/descriptions';
+import { CaretDownOutlined } from '@ant-design/icons-vue';
+import { useRoute } from 'vue-router';
+import CommentSection from './CommentSection.vue';
+import useDetails from '@/views/dataSource/useDetails.js';
+import WaterfallList from '../listPage/waterfallList.vue';
+import useDataList from '@/views/listPage/dataList';
 
 export default {
   components: {
@@ -74,31 +81,32 @@ export default {
       nextPage,
       loading,
       loadEnd
-    } = useDataList()
-    const router = useRoute()
-    const { data } = useDetails(router.query.id)
+    } = useDataList();
+    const router = useRoute();
+    const { data } = useDetails(router.query.id);
 
     const loadFullScreen = async () => {
       let oTop =
         document.body.scrollTop === 0
           ? document.documentElement.scrollTop
-          : document.body.scrollTop
+          : document.body.scrollTop;
       let bottomOfWindow =
-        document.documentElement.scrollHeight - (oTop + window.innerHeight) < 20
+        document.documentElement.scrollHeight - (oTop + window.innerHeight) <
+        20;
       if (bottomOfWindow) {
-        await nextPage()
+        await nextPage();
       }
-    }
+    };
 
-    provide('detailData', data)
+    provide('detailData', data);
 
     onMounted(() => {
-      loadFullScreen()
+      loadFullScreen();
       // // 滚动加载
       window.addEventListener('scroll', () => {
-        loadFullScreen()
-      })
-    })
+        loadFullScreen();
+      });
+    });
     return {
       dataList,
       params,
@@ -108,9 +116,9 @@ export default {
       loadEnd,
       loadFullScreen,
       data
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

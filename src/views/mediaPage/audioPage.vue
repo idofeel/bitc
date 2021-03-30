@@ -36,6 +36,13 @@
             <Descriptions class="audio_desc" size="middle">
               <DescriptionsItem>作者：{{ data.author }}</DescriptionsItem>
               <DescriptionsItem>主题：{{ data.theme }}</DescriptionsItem>
+              <DescriptionsItem>学院：{{ data.college }}</DescriptionsItem>
+              <DescriptionsItem
+                >类型：{{ data.type === 0 ? '视频' : '音频' }}</DescriptionsItem
+              >
+              <DescriptionsItem
+                >资源类型：{{ data.resourceType }}</DescriptionsItem
+              >
               <DescriptionsItem span="2"
                 >简介：{{ data.content }}</DescriptionsItem
               >
@@ -63,15 +70,15 @@
 </template>
 
 <script>
-import { provide, onMounted, ref, watch } from 'vue'
-import { Descriptions, Divider, Empty } from 'ant-design-vue'
-import { DescriptionsItem } from 'ant-design-vue/lib/descriptions'
-import { CaretDownOutlined } from '@ant-design/icons-vue'
-import { useRoute } from 'vue-router'
-import CommentSection from './CommentSection.vue'
-import useDetails from '@/views/dataSource/useDetails.js'
-import WaterfallList from '../listPage/waterfallList.vue'
-import useDataList from '@/views/listPage/dataList'
+import { provide, onMounted, ref, watch } from 'vue';
+import { Descriptions, Divider, Empty } from 'ant-design-vue';
+import { DescriptionsItem } from 'ant-design-vue/lib/descriptions';
+import { CaretDownOutlined } from '@ant-design/icons-vue';
+import { useRoute } from 'vue-router';
+import CommentSection from './CommentSection.vue';
+import useDetails from '@/views/dataSource/useDetails.js';
+import WaterfallList from '../listPage/waterfallList.vue';
+import useDataList from '@/views/listPage/dataList';
 
 export default {
   components: {
@@ -91,55 +98,56 @@ export default {
       nextPage,
       loading,
       loadEnd
-    } = useDataList()
-    const router = useRoute()
-    const { data, lrc } = useDetails(router.query.id)
+    } = useDataList();
+    const router = useRoute();
+    const { data, lrc } = useDetails(router.query.id);
 
-    let AUDIO = null
-    const currLine = ref(null)
-    const audioRef = (el) => (AUDIO = el)
+    let AUDIO = null;
+    const currLine = ref(null);
+    const audioRef = (el) => (AUDIO = el);
 
-    let audioContainer = null
-    const audioContainerRef = (el) => (audioContainer = el)
+    let audioContainer = null;
+    const audioContainerRef = (el) => (audioContainer = el);
 
     const loadFullScreen = async () => {
       let oTop =
         document.body.scrollTop === 0
           ? document.documentElement.scrollTop
-          : document.body.scrollTop
+          : document.body.scrollTop;
       let bottomOfWindow =
-        document.documentElement.scrollHeight - (oTop + window.innerHeight) < 20
+        document.documentElement.scrollHeight - (oTop + window.innerHeight) <
+        20;
       if (bottomOfWindow) {
-        await nextPage()
+        await nextPage();
       }
-    }
+    };
 
     function setCurrentTime(ctime, index) {
-      currLine.value = index
-      AUDIO.currentTime = ctime
-      AUDIO.play()
+      currLine.value = index;
+      AUDIO.currentTime = ctime;
+      AUDIO.play();
     }
 
     watch(currLine, () => {
-      wheel = false
-    })
+      wheel = false;
+    });
 
-    let timer = null
-    let start = 0
-    let wheel = false
-    let speed = 1
+    let timer = null;
+    let start = 0;
+    let wheel = false;
+    let speed = 1;
 
     function scrollLrc() {
-      if (wheel) return
-      const boxCenterHeight = audioContainer.clientHeight / 2
-      const scrollHeight = audioContainer.scrollHeight
+      if (wheel) return;
+      const boxCenterHeight = audioContainer.clientHeight / 2;
+      const scrollHeight = audioContainer.scrollHeight;
 
-      const currentPlayDom = audioContainer.children[currLine.value]
+      const currentPlayDom = audioContainer.children[currLine.value];
       // 当前距离顶部的高度 - 初始的高度
-      const scrollTop = currentPlayDom.offsetTop - audioContainer.offsetTop
+      const scrollTop = currentPlayDom.offsetTop - audioContainer.offsetTop;
 
       const currentScroll =
-        scrollTop > boxCenterHeight ? scrollTop - boxCenterHeight : 0
+        scrollTop > boxCenterHeight ? scrollTop - boxCenterHeight : 0;
       //   if (audioContainer.clientHeight >= audioContainer.clientHeight) {
       //     cancelAnimationFrame(timer)
       //     console.log('滚不动了')
@@ -147,64 +155,64 @@ export default {
 
       function updateScroll() {
         if (scrollHeight - audioContainer.clientHeight <= start) {
-          start = 0
-          return cancelAnimationFrame(timer)
+          start = 0;
+          return cancelAnimationFrame(timer);
         }
-        const count = speed / 20
+        const count = speed / 20;
 
         if (currentScroll < audioContainer.scrollTop) {
           // 向上滚动 audioContainer.scrollTop - currentScroll
 
-          start = audioContainer.scrollTop - count
+          start = audioContainer.scrollTop - count;
         } else {
           // 向下滚动 audioContainer.scrollTop - currentScroll
-          start = audioContainer.scrollTop + count
+          start = audioContainer.scrollTop + count;
         }
         if (start > currentScroll) {
-          start = currentScroll
+          start = currentScroll;
         }
         if (start === currentScroll) {
-          cancelAnimationFrame(timer)
+          cancelAnimationFrame(timer);
         } else {
-          timer = requestAnimationFrame(updateScroll)
+          timer = requestAnimationFrame(updateScroll);
         }
-        audioContainer.scrollTop = start
+        audioContainer.scrollTop = start;
       }
 
       if (audioContainer.scrollTop !== currentScroll) {
-        wheel = true
-        speed = currentScroll - audioContainer.scrollTop
-        updateScroll()
+        wheel = true;
+        speed = currentScroll - audioContainer.scrollTop;
+        updateScroll();
       }
     }
 
-    provide('detailData', data)
+    provide('detailData', data);
 
     onMounted(() => {
       AUDIO.addEventListener('timeupdate', () => {
-        const ctime = AUDIO.currentTime
+        const ctime = AUDIO.currentTime;
         lrc.value.some((item, index) => {
-          const next = ctime > item.start && ctime < item.end
+          const next = ctime > item.start && ctime < item.end;
           if (next) {
-            currLine.value = index
-            scrollLrc()
+            currLine.value = index;
+            scrollLrc();
           }
-          return next
-        })
-      })
+          return next;
+        });
+      });
 
       window.addEventListener('wheel', () => {
-        wheel = true
-      })
+        wheel = true;
+      });
       window.addEventListener('touchmove', () => {
-        wheel = true
-      })
-      loadFullScreen()
+        wheel = true;
+      });
+      loadFullScreen();
       // // 滚动加载
       window.addEventListener('scroll', () => {
-        loadFullScreen()
-      })
-    })
+        loadFullScreen();
+      });
+    });
 
     return {
       audioRef,
@@ -220,9 +228,9 @@ export default {
       data,
       lrc,
       setCurrentTime
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

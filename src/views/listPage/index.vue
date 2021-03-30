@@ -1,19 +1,5 @@
 <template>
   <div class="listPage lg_container" ref="listPage">
-    <div id="nav">
-      <img
-        :src="require('@/assets/logo1.png')"
-        class="logo lg_container sm-hide"
-        alt
-      />
-      <img
-        :src="require('@/assets/logo2.png')"
-        class="logo lg_container sm-show"
-        alt
-      />
-      <!-- <router-link to="/">Home</router-link> |
-            <router-link to="/list">list</router-link>-->
-    </div>
     <a-row>
       <a-col :xs="24" :md="16">
         <div class="header">
@@ -34,6 +20,7 @@
         <a-spin :spinning="loading"></a-spin>
         <Empty
           :image="PRESENTED_IMAGE_SIMPLE"
+          description="数据为空"
           v-if="dataList.length === 0 && loadEnd"
         />
 
@@ -77,8 +64,7 @@
             type="primary"
             @click="toggleVisible(false), initData()"
             >筛选
-            </a-button
-          >
+          </a-button>
         </div>
       </Drawer>
     </a-row>
@@ -87,16 +73,15 @@
 </template>
 /
 <script>
-import { onMounted, ref } from 'vue'
-import useDataList from '@/views/listPage/dataList'
-import { FilterOutlined } from '@ant-design/icons-vue'
-import { Drawer, Divider, Empty } from 'ant-design-vue'
-import FilterCondtions from './filterCondtions'
-import WaterfallList from './waterfallList.vue'
-import useCateData from '@/views/dataSource/useCateData'
+import { onMounted, ref } from 'vue';
+import useDataList from '@/views/listPage/dataList';
+import { FilterOutlined } from '@ant-design/icons-vue';
+import { Drawer, Divider, Empty } from 'ant-design-vue';
+import FilterCondtions from './filterCondtions';
+import WaterfallList from './waterfallList.vue';
+import useCateData from '@/views/dataSource/useCateData';
 
-
-const { PRESENTED_IMAGE_SIMPLE } = Empty
+const { PRESENTED_IMAGE_SIMPLE } = Empty;
 
 export default {
   components: {
@@ -105,7 +90,7 @@ export default {
     Empty,
     WaterfallList,
     Drawer,
-    FilterCondtions,
+    FilterCondtions
   },
 
   setup() {
@@ -117,55 +102,56 @@ export default {
       nextPage,
       loading,
       loadEnd
-    } = useDataList()
+    } = useDataList();
 
-    const listPage = ref(null)
-    const drawerVisible = ref(false)
+    const listPage = ref(null);
+    const drawerVisible = ref(false);
 
     function toggleVisible(bl) {
-      if (bl === drawerVisible.value) return
-      drawerVisible.value = bl === undefined ? !!drawerVisible.value : bl
+      if (bl === drawerVisible.value) return;
+      drawerVisible.value = bl === undefined ? !!drawerVisible.value : bl;
     }
 
     const loadFullScreen = async () => {
       let oTop =
         document.body.scrollTop === 0
           ? document.documentElement.scrollTop
-          : document.body.scrollTop
+          : document.body.scrollTop;
       let bottomOfWindow =
-        document.documentElement.scrollHeight - (oTop + window.innerHeight) < 20
+        document.documentElement.scrollHeight - (oTop + window.innerHeight) <
+        20;
       if (bottomOfWindow) {
-        await nextPage()
+        await nextPage();
       }
-    }
+    };
 
     function onReady() {
-      loadFullScreen()
+      loadFullScreen();
     }
 
-    const { getChecked, condtions } = useCateData()
+    const { getChecked, condtions } = useCateData();
 
     function itemClick() {
       const getCheckedName = () => {
-        const cnames = getChecked().map((i) => i.map((j) => j.name).join('_'))
-        return cnames
-      }
-      const [theme, grade, college] = getCheckedName()
-      params.theme = theme
-      params.grade = grade
-      params.college = college
+        const cnames = getChecked().map((i) => i.map((j) => j.name).join('_'));
+        return cnames;
+      };
+      const [theme, grade, college] = getCheckedName();
+      params.theme = theme;
+      params.grade = grade;
+      params.college = college;
     }
 
     onMounted(() => {
       window.matchMedia('(max-width:768px)').addListener(function() {
-        toggleVisible(false)
-      })
-      loadFullScreen()
+        toggleVisible(false);
+      });
+      loadFullScreen();
       // // 滚动加载
       window.addEventListener('scroll', () => {
-        loadFullScreen()
-      })
-    })
+        loadFullScreen();
+      });
+    });
 
     return {
       condtions,
@@ -178,10 +164,11 @@ export default {
       initData,
       params,
       drawerVisible,
+      toggleVisible,
       PRESENTED_IMAGE_SIMPLE
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

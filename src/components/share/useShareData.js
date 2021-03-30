@@ -1,25 +1,35 @@
 
-import {  ref , nextTick } from 'vue'
+import { ref, reactive, nextTick, onMounted } from 'vue'
 
 
-export default function () {
+import '@/assets/social-share/js/social-share.js'
+
+
+
+export default function (props) {
     const shareVisible = ref(false)
-function toggleShareVisbible(bl){
-     
-      shareVisible.value = !!bl
+    const config = reactive({
+        sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban'],
+    })
 
-      nextTick(()=>{
- if(bl){
-         let cfg = {
-                sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban'],
-            } 
-            window.socialShare('.social-share', cfg);
-        }
-      })
+    function toggleShareVisbible (bl, shareConfig) {
+
+        shareVisible.value = !!bl
+
+        nextTick(() => {
+            console.log(props);
+            if (bl) window.socialShare('.social-share', { ...config, ...shareConfig });
+        })
     }
 
-return {
-      shareVisible,
-      toggleShareVisbible,
-      }
+
+
+    onMounted(() => {
+        window.socialShare('.social-share', config);
+    })
+
+    return {
+        shareVisible,
+        toggleShareVisbible,
+    }
 }
