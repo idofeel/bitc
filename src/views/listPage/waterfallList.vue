@@ -131,7 +131,9 @@ export default {
         url:
           window.location.origin +
           location.pathname +
-          `#/${item.type === 1 ? 'audio' : 'video'}?id=${item.id}`,
+          `#/${item.type === 1 ? 'audio' : 'video'}?id=${item.id}&nid=${
+            item.nodeId
+          }`,
         image: item.url
       });
     }
