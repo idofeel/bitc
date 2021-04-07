@@ -56,7 +56,7 @@
 
               {{ data.readNum }} 次播放
             </span>
-            <span @click.stop="shareTo(data)" class="mh10">
+            <span @click.stop="shareTo(data)" class="mh10 shareBox">
               <ShareAltOutlined />
               分享
             </span>
@@ -395,6 +395,10 @@ export default {
     color: #ccc;
     font-size: 12px;
   }
+}
+
+.shareBox {
+  cursor: pointer;
 }
 // 当屏幕小于768
 @media screen and (max-width: 769px) {
