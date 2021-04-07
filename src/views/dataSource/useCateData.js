@@ -4,8 +4,8 @@ import _interface from '@/api/interface'
 export default function () {
 
     const themeIndex = 0
-    const gradeIndex = 2
-    const collegeIndex = 3
+    const collegeIndex = 2
+    const gradeIndex = 3
 
     const condtions = reactive([
 
@@ -28,6 +28,15 @@ export default function () {
             ]
         },
         {
+            title: '院系',
+            tags: [
+                // { name: '2018年', id: '2018', checked: false },
+                // { name: '2019年', id: '2019', checked: false },
+                // { name: '2020年', id: '2020', checked: false },
+                // { name: '2021年', id: '2021', checked: false }
+            ]
+        },
+        {
             title: '班级',
             tags: [
                 // { name: '1826021', id: '1826021', checked: false },
@@ -36,15 +45,6 @@ export default function () {
                 // { name: '1826052', id: '1826052', checked: false },
                 // { name: '1926021', id: '1926021', checked: false },
                 // { name: '1926051', id: '1926051', checked: false }
-            ]
-        },
-        {
-            title: '院系',
-            tags: [
-                // { name: '2018年', id: '2018', checked: false },
-                // { name: '2019年', id: '2019', checked: false },
-                // { name: '2020年', id: '2020', checked: false },
-                // { name: '2021年', id: '2021', checked: false }
             ]
         }])
 
@@ -69,7 +69,7 @@ export default function () {
             const res = await get(_interface.theme)
 
             if (res.code === 0) {
-                condtions[themeIndex].tags = res.data.map(formatterData)
+                condtions[themeIndex].tags = res.data
                 // 
             }
         } catch (error) {

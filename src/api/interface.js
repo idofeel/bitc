@@ -4,7 +4,8 @@ export default {
     // 首页栏目
     homePage: 'interface/special/node',
     // 主题活动
-    theme: 'interface/special/theme/attribute',
+    // theme: 'interface/special/theme/attribute',
+    theme: 'interface/special/node',
     grade: 'interface/special/grade/attribute',
     college: 'interface/special/college/attribute',
     details: 'interface/special/', // {id}

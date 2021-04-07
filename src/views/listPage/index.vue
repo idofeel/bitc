@@ -140,14 +140,17 @@ export default {
       const getCheckedId = getChecked().map((i) =>
         i.map((j) => j.id).join('_')
       );
-      //    0 活动  1 类型 2班级 3 院系
-      const [theme, playType, grade, college] = getCheckedName();
+      //    0 活动  1 类型 2 院系 3班级
+      const [theme, playType, college, grade] = getCheckedName();
 
       playType;
+      theme;
+      console.log(getCheckedId[0]);
 
       const typeid = getCheckedId[1];
       params.type = typeid.indexOf('_') > -1 ? '' : typeid;
-      params.theme = theme;
+      params.nodeIds = getCheckedId[0];
+      //   params.theme = theme;
       params.grade = grade;
       params.college = college;
     }
