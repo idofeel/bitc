@@ -136,7 +136,17 @@ export default {
         const cnames = getChecked().map((i) => i.map((j) => j.name).join('_'));
         return cnames;
       };
-      const [theme, grade, college] = getCheckedName();
+
+      const getCheckedId = getChecked().map((i) =>
+        i.map((j) => j.id).join('_')
+      );
+      //    0 活动  1 类型 2班级 3 院系
+      const [theme, playType, grade, college] = getCheckedName();
+
+      playType;
+
+      const typeid = getCheckedId[1];
+      params.type = typeid.indexOf('_') > -1 ? '' : typeid;
       params.theme = theme;
       params.grade = grade;
       params.college = college;

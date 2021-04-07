@@ -42,18 +42,21 @@ export default function (id) {
     }
 
     const addComment = async () => {
+        let res;
         try {
             response.addLoading = true
-            const res = await post(_interface.addComment, commentParams)
+            res = await post(_interface.addComment, commentParams)
             if (res.code === 0 || res.code === '0') {
                 commentParams.commentContent = ''
                 getCommentList()
-                message.success('评论成功，审核通过后可见')
+                message.success('评论已提交，审核后发布')
             } else {
                 throw new Error(res.msg)
             }
+            return res
         } catch (error) {
             message.error(error.message)
+            return false
         } finally {
             response.addLoading = false
         }

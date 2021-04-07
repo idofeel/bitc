@@ -1,6 +1,5 @@
-// 这个文件负责管理数据和逻辑处理
-
 import { onBeforeMount, onMounted, ref, reactive } from 'vue'
+
 import { get } from '@/api'
 import _interface from '@/api/interface'
 import { useRouter } from 'vue-router'
@@ -15,7 +14,7 @@ export default function () {
 
     const { currentRoute } = useRouter()
     let requestParams = reactive({
-        nodeId: currentRoute.value.query.id,
+        nodeId: currentRoute.value.query.nid,
         name: '',
         college: '',
         grade: '',
@@ -47,31 +46,19 @@ export default function () {
         if (res.code === 0) {
             const formatterResData = (item) => {
                 return {
+                    ...item,
                     id: item.id,
                     title: item.name,
                     url: item.cover,
                     readNum: item.readNum,
                     praise: item.showNumber,
-                    type: item.type
+                    type: item.type,
                 }
             }
             const resData = res.data.map(formatterResData)
 
-            // console.log('获取到数据', dataList, resData);//这里是对的
-            // dataList有三条 resData有5条 后面push进去是8条呀、
-            // 数据是没啥问题是吧，就是 一直在刷新 然后现在就卡死也 像死循环一样
-            // resData.forEach(item=>{
-            // 	dataList.push(item)
-            // })
             dataList.push(...resData)
-            // console.log(dataList);
 
-            // resData.forEach(e=>dataList.push())
-
-            // dataList.push(...resData)
-            // 这两行有问题呀
-            // console.log('获取到数据dataList', dataList);//
-            // 返回数量 小于 请求的数量
             if (res.data.length < requestParams.limit) {
                 setloadEnd(true)
             } else {
@@ -118,8 +105,6 @@ export default function () {
     }
 
     onBeforeMount(initData)
-
-
 
     onMounted(() => {
         // window.addEventListener('scroll', () => {

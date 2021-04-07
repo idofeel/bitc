@@ -16,7 +16,7 @@
             @click="
               $router.push({
                 path: item.type === 1 ? '/audio' : '/video',
-                query: { id: item.id }
+                query: { id: item.id, nid: item.nodeId }
               })
             "
           >

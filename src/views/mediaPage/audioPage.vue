@@ -1,7 +1,7 @@
 <template>
   <div class="audio_container ">
     <div class="lg_container">
-      <h3 style="text-align:center;">正在播放：{{ data.name }}</h3>
+      <h3 style="text-align:center;">{{ data.name }}</h3>
       <div class="audioContent">
         <div class="audio_box">
           <div class="audio_cotnent">
@@ -296,6 +296,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    max-height: 300px;
     img {
       max-width: 100%;
       max-height: 100%;
@@ -334,6 +335,19 @@ export default {
     padding: 10px 0;
     color: #ccc;
     font-size: 12px;
+  }
+}
+// 当屏幕小于768
+@media screen and (max-width: 769px) {
+  .audio_cotnent {
+    flex-direction: column;
+
+    .audio_cover {
+      overflow: hidden;
+      img {
+        max-height: 200px;
+      }
+    }
   }
 }
 </style>

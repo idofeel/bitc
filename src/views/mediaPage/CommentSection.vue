@@ -17,7 +17,7 @@
             cancelText="取消"
             okText="提交"
             :confirmLoading="addLoading"
-            @ok="addComment"
+            @ok="submitComment"
           >
             <div>
               <a-input
@@ -81,14 +81,15 @@ import {
   Comment,
   List,
   tooltip as ATooltip,
-  Modal as AModal
-} from 'ant-design-vue'
-import AFormItem from 'ant-design-vue/lib/form/FormItem'
-import ListItem from 'ant-design-vue/lib/list'
+  Modal as AModal,
+  message
+} from 'ant-design-vue';
+import AFormItem from 'ant-design-vue/lib/form/FormItem';
+import ListItem from 'ant-design-vue/lib/list';
 // import moment from 'moment'
-import useComment from '@/views/dataSource/useComment'
-import { inject, watch, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import useComment from '@/views/dataSource/useComment';
+import { inject, watch, ref } from 'vue';
+import { useRoute } from 'vue-router';
 export default {
   components: {
     Comment,
@@ -99,8 +100,8 @@ export default {
     AModal
   },
   setup() {
-    const router = useRoute()
-    const uid = router.query.id * 1
+    const router = useRoute();
+    const uid = router.query.id * 1;
     const {
       commentList: data,
       addComment,
@@ -109,27 +110,36 @@ export default {
       addLoading,
       setVerCode,
       imgCode
-    } = useComment(uid)
+    } = useComment(uid);
 
-    const detail = inject('detailData')
+    const detail = inject('detailData');
 
     watch(detail, (detail) => {
       if (detail.id === uid) {
         //
-        commentParams.title = detail.name
+        commentParams.title = detail.name;
       }
-    })
+    });
 
-    const modal2Visible = ref(false)
+    const modal2Visible = ref(false);
 
     const setModal2Visible = (visible) => {
-      modal2Visible.value = visible
-      setVerCode()
-    }
+      modal2Visible.value = visible;
+      setVerCode();
+    };
 
+    const submitComment = async () => {
+      if (!commentParams.code || commentParams.code.length !== 4) {
+        return message.warning('请输入验证码');
+      }
+      const res = await addComment();
+      if (res) {
+        modal2Visible.value = false;
+      }
+    };
     return {
       data,
-      addComment,
+      submitComment,
       commentParams,
       loading,
       addLoading,
@@ -157,9 +167,9 @@ export default {
       //       datetime: moment().subtract(2, 'days')
       //     }
       //   ]
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

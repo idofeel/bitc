@@ -74,7 +74,7 @@ export default {
       push({
         path: '/list',
         query: {
-          id: item.id
+          nid: item.id
         }
       });
     }

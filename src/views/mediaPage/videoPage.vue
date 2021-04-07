@@ -1,7 +1,7 @@
 <template>
   <div class="video_container">
     <div class="lg_container">
-      <h3 style="text-align:center;">正在播放：{{ data.name }}</h3>
+      <h3 style="text-align:center;">{{ data.name }}</h3>
 
       <div class="video_box">
         <video controls :src="data.contentUrl"></video>
