@@ -6,10 +6,10 @@ const CompressionPlugin = require('compression-webpack-plugin')
 console.log('当前环境 ' + process.env.NODE_ENV)
 console.log('当前环境接口地址 ' + process.env.VUE_APP_BASE_URL)
 
-// const cdn = {
-//     css: [],
-//     js: ['https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js']
-// }
+const cdn = {
+    css: [],
+    js: ['http://file.jingshicorp.com/moment.min.js']
+}
 
 module.exports = {
     publicPath: './',
@@ -18,6 +18,15 @@ module.exports = {
     indexPath: 'index.html',
     productionSourceMap: false,
     filenameHashing: false,
+    // pages: {
+    //     index: {//入口页面配置
+    //         entry: 'src/main.js',
+    //         template: 'public/index.html',
+    //         filename: 'index.html',
+    //         cdn: cdn,//配置cdn
+    //         chunks: ['chunk-vendors', 'chunk-common', 'index'],
+    //     }
+    // },
     devServer: {
         // host: '127.0.0.1', // 配置主机地址
         // port: process.env.NODE_ENV == 'production' ? 3000 : 8888, // 配置运⾏的端⼝

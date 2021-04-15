@@ -1,12 +1,12 @@
 <template>
   <div id="nav">
     <img
-      :src="require('@/assets/logo1.png')"
+      src="http://file.jingshicorp.com/logo1.0c402071.png"
       class="logo lg_container sm-hide"
       alt
     />
     <img
-      :src="require('@/assets/logo2.png')"
+      src="http://file.jingshicorp.com/logo2.1c0c0e01.png"
       class="logo lg_container sm-show"
       alt
     />
