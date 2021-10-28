@@ -13,9 +13,17 @@
     <!-- <router-link to="/">Home</router-link> |
             <router-link to="/list">list</router-link>-->
   </div>
-  <router-view />
+  <router-view :key="key"/>
 </template>
-
+<script>
+export default {
+	computed: {
+		key() {
+			return this.$route.fullPath
+		},
+	},
+}
+</script>
 <style lang="less">
 @import './global.less';
 #app {

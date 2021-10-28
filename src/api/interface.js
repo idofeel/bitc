@@ -10,7 +10,8 @@ export default {
     college: 'interface/special/college/attribute',
     details: 'interface/special/', // {id}
     // 评论
-    addComment: 'interface/special/comment',
+    addComment1: 'interface/special/comment',
+    addComment: 'interface/special/commentCon',
     getComment: 'interface/special/commentList',
     // 验证码
     getGifCode: '/vendor/getGifCode'

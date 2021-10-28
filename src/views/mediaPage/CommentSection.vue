@@ -1,10 +1,10 @@
 <template>
   <div class="comment_section">
     <h3>
-      评论
+      发表评论
       <span>（已有 {{ data.length }} 条评论）</span>
     </h3>
-    <Comment>
+    <Comment v-if="false">
       <template #content>
         <a-form-item class="comment_area ant-col-24">
           <a-textarea :rows="4" v-model:value="commentParams.commentContent" />
@@ -23,7 +23,7 @@
               <a-input
                 placeholder="请输入验证码"
                 v-model:value="commentParams.code"
-                maxlength="4"
+                :maxlength="4"
               >
                 <template #addonAfter>
                   <img :src="imgCode" alt="" @click="setVerCode" />
@@ -43,7 +43,21 @@
         </a-form-item>
       </template>
     </Comment>
+     <div class="detail_wbtext_4CRf9" >
+        <img  v-for="item in commentEmoji" :key="item.key" :alt="item.title" :title="item.title" :src="item.url" @click="submitComment(item.key)">
+        <!-- <img alt="[鼓掌]" title="[鼓掌]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/6e/2018new_guzhang_org.png">
+        <img alt="[笑cry]" title="[笑cry]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/4a/2018new_xiaoku_thumb.png">
+        <img alt="[晕]" title="[晕]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/07/2018new_yun_org.png">
+        <img alt="[嘻嘻]" title="[嘻嘻]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/33/2018new_xixi_org.png">
 
+        <img alt="[鲜花]" title="[鲜花]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/d4/2018new_xianhua_org.png">
+        <img alt="[晕]" title="[晕]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/07/2018new_yun_org.png">
+        
+        <img alt="[可爱]" title="[可爱]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/09/2018new_keai_org.png">
+        <img alt="[汗]" title="[汗]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/28/2018new_han_org.png">
+        <img alt="[泪]" title="[泪]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/6e/2018new_leimu_org.png">
+        <img alt="[鄙视]" title="[鄙视]" src="https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/da/2018new_bishi_org.png">  -->
+  </div>
     <List
       class="comment-list"
       :header="`${data.length} 条评论`"
@@ -59,7 +73,8 @@
               }}</span>
             </template>
             <template #content>
-              <p>{{ item.commentContent }}</p>
+              <img v-if="emoji[item.commentContent]" :alt="emoji[item.commentContent].title" :title="emoji[item.commentContent].title" :src="emoji[item.commentContent].url">  
+              <p v-else>{{ item.commentContent }}</p>
             </template>
             <template #datetime>
               <a-tooltip :title="item.createDate">
@@ -82,7 +97,7 @@ import {
   List,
   tooltip as ATooltip,
   Modal as AModal,
-  message
+  // message
 } from 'ant-design-vue';
 import AFormItem from 'ant-design-vue/lib/form/FormItem';
 import ListItem from 'ant-design-vue/lib/list';
@@ -102,6 +117,7 @@ export default {
   setup() {
     const router = useRoute();
     const uid = router.query.id * 1;
+    // 评论
     const {
       commentList: data,
       addComment,
@@ -109,7 +125,8 @@ export default {
       loading,
       addLoading,
       setVerCode,
-      imgCode
+      imgCode,
+      commentEmoji
     } = useComment(uid);
 
     const detail = inject('detailData');
@@ -128,15 +145,18 @@ export default {
       setVerCode();
     };
 
-    const submitComment = async () => {
-      if (!commentParams.code || commentParams.code.length !== 4) {
-        return message.warning('请输入验证码');
-      }
+    const submitComment = async (content) => {
+      commentParams.commentContent = content
+      // 暂时不需要验证
+      // if (!commentParams.code || commentParams.code.length !== 4) {
+      //   return message.warning('请输入验证码');
+      // }
       const res = await addComment();
       if (res) {
         modal2Visible.value = false;
       }
     };
+
     return {
       data,
       submitComment,
@@ -146,7 +166,9 @@ export default {
       setVerCode,
       imgCode,
       modal2Visible,
-      setModal2Visible
+      setModal2Visible,
+      emoji:commentEmoji,
+      commentEmoji:Object.values(commentEmoji)
 
       //   da2: [
       //     {
@@ -199,6 +221,13 @@ export default {
 
   .more_comment {
     text-align: center;
+  }
+
+  .detail_wbtext_4CRf9{
+    img{
+      padding: 10px;
+      cursor: pointer;
+    }
   }
 }
 </style>
