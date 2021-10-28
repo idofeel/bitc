@@ -47,7 +47,7 @@ export default function(id) {
       title: "[嘻嘻]"
     },
     xianhua: {
-      key: "xixi",
+      key: "xianhua",
       url:
         "https://face.t.sinajs.cn/t4/appstyle/expression/ext/normal/d4/2018new_xianhua_org.png",
       title: "[鲜花]"
